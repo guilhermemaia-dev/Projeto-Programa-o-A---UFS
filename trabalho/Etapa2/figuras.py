@@ -8,6 +8,8 @@ class Figuras(ABC):
         self.posx = posx
         self.posy = posy
 
+
+
 #Cria o método abstrato desenhar, que as classes filhas terão que completar
     @abstractmethod
     def desenhar(self, canvas):

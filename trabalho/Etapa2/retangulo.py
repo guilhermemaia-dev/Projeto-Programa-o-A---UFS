@@ -10,6 +10,3 @@ class Retangulo(Figuras):
     def desenhar(self, canvas):
         canvas.create_rectangle(self.ini_x,self.ini_y,self.posx,self.posy,outline = self.cor_borda, fill = self.cor_preenchimento)
 
-
-
-
