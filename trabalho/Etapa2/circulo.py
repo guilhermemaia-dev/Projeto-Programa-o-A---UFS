@@ -1,4 +1,4 @@
-from figura import Figuras
+from figuras import Figuras
 from tkinter import *
 
 #CRIA O CIRCULO
