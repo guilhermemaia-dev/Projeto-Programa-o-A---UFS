@@ -2,7 +2,7 @@ import estado
 from oval import Oval
 from retangulo import Retangulo
 from circulo import Circulo
-from maolivre import Mao_Livre
+from mao_livre import Mao_Livre
 from reta import Reta
 
 
