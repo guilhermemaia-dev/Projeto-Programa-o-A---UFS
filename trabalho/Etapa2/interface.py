@@ -128,9 +128,18 @@ class Interface:
         figura = self.criar_figura(self.x2, self.y2)
 
         #garante que não seja criada figuras com apenas um clique, ou seja, figuras que a posição inicial for igual a final (sem movimentação)
-        if self.ini_x != self.x2 or self.ini_y != self.y2:
+        if self.ini_x != self.x2 and self.ini_y != self.y2:
             self.figuras.append(figura)
+
+
+        if self.ferramenta_atual == "Oval":
+            #          10         -70    80
+            if -50000 > self.ini_x - self.x2 > 50000 or -50000 > self.ini_y - self.y2 > 50000:
+                self.figuras.append(figura)
+
         self.desenhar_figuras()
+            
+
 
 
 

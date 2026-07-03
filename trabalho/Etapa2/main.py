@@ -4,7 +4,7 @@ from interface import Interface
 # Criar janela principal
 
 root = Tk()
-root.geometry("1280x720")
+root.geometry("1600x900")
 root.title("PAINT 2.0")
 
 canva = Canvas(root, width=1024, height=576, bg="white")
