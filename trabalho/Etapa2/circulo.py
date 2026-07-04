@@ -15,4 +15,8 @@ class Circulo(Figuras):
         self.raio = (((self.ini_x - self.posx)**2 + (self.ini_y - self.posy)**2)**0.5)
         canvas.create_oval(self.ini_x-self.raio, self.ini_y-self.raio, self.ini_x+self.raio, self.ini_y+self.raio,outline=self.cor_borda,  fill=self.cor_preenchimento)
 
+    # validação para que o raio tenha um tamanho minimo de 2
+    def validar(self):
+        raio = ((self.ini_x - self.posx) ** 2 + (self.ini_y - self.posy) ** 2) ** 0.5
+        return raio >= 2
     

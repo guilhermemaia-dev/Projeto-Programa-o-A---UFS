@@ -8,3 +8,10 @@ class Reta(Figuras):
         self.cor_preenchimento = cor_preenchimento
     def desenhar(self, canvas):
         canvas.create_line(self.ini_x, self.ini_y, self.posx, self.posy, fill=self.cor_preenchimento)
+
+    # metodo para validar se a figura é ou não um ponto, ou seja, deu apenas um clique na tela
+    def validar(self):
+        largura = abs(self.posx - self.ini_x)
+        altura = abs(self.posy - self.ini_y)
+
+        return largura > 0 or altura > 0

@@ -9,9 +9,12 @@ class Figuras(ABC):
         self.posy = posy
 
 
-
 #Cria o método abstrato desenhar, que as classes filhas terão que completar
     @abstractmethod
     def desenhar(self, canvas):
+        pass
+
+    @abstractmethod
+    def validar(self):
         pass
 

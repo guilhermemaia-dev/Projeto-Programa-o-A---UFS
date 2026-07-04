@@ -10,3 +10,9 @@ class Retangulo(Figuras):
     def desenhar(self, canvas):
         canvas.create_rectangle(self.ini_x,self.ini_y,self.posx,self.posy,outline = self.cor_borda, fill = self.cor_preenchimento)
 
+    # metodo para validar se a figura é uma reta ou não
+    def validar(self):
+        largura = abs(self.posx - self.ini_x)
+        altura = abs(self.posy - self.ini_y)
+
+        return largura >= 2 and altura >= 2

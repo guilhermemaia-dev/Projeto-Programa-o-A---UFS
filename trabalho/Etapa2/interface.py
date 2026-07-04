@@ -42,7 +42,7 @@ class Interface:
 
             bot_cor.pack(side=LEFT, pady=1)
             
-        #criar os botoes do seletor de figuras
+        #criar os botões do seletor de figuras
         bot_livre = Button(self.janela, text="MÃO LIVRE", command=self.selecionar_livre)
         bot_reta = Button(self.janela, text="RETA", command=self.selecionar_reta)
         bot_retangulo = Button(self.janela, text="RETANGULAR", command=self.selecionar_retangulo)
@@ -67,6 +67,12 @@ class Interface:
         label_indicar_cor_preenchimento.pack(side=LEFT, padx=10)
         self.label_corPreench_selecionada = Label(self.janela, bg="#E7E7E7", width=2, height=1)
         self.label_corPreench_selecionada.pack(side=LEFT, padx=10)
+
+        # mostrar a ferramenta selecionada atualmente
+        label_indicar_ferramenta_atual = Label(self.janela, text="Ferramenta selecionada:")
+        label_indicar_ferramenta_atual.pack(side=LEFT, padx=10)
+        self.mostrar_ferramenta_atual = Label(self.janela, text=self.ferramenta_atual)
+        self.mostrar_ferramenta_atual.pack(side=LEFT,padx=10)
 
         #Capta os cliques do mouse
         self.canvas.bind("<Button-1>", self.mouse_ini)
@@ -94,7 +100,6 @@ class Interface:
                 self.cor_selecionada_borda = cor_clicada
 
         self.label_cor_selecionadaBorda.configure(bg=self.cor_selecionada_borda)
-
 
 
     #captar os eventos do mouse e guardar coordenadas
@@ -127,22 +132,16 @@ class Interface:
 
         figura = self.criar_figura(self.x2, self.y2)
 
-        #garante que não seja criada figuras com apenas um clique, ou seja, figuras que a posição inicial for igual a final (sem movimentação)
-        if self.ini_x != self.x2 and self.ini_y != self.y2:
-            self.figuras.append(figura)
-
-
-        if self.ferramenta_atual == "Oval":
-            #          10         -70    80
-            if -50000 > self.ini_x - self.x2 > 50000 or -50000 > self.ini_y - self.y2 > 50000:
-                self.figuras.append(figura)
-
+        #verifica se a figura é valida ou não (cada figura sabe se ela mesmo é valida ou se não é)
+        # se não for válida, ela não se desenha, caso contrário, adiciona na lista das figuras e desenha
+        if not figura.validar():
+            self.desenhar_figuras()
+            return
+        
+        self.figuras.append(figura)
         self.desenhar_figuras()
+
             
-
-
-
-
     # metodo para criar a figura
     # os parâmetros x,y dependem do que for, por exemplo, se for o mouse_movimentacao (preview) que chama o metodo, então será passado x1,y1
     # caso for fim_mouse será passado x2,y2
@@ -166,15 +165,20 @@ class Interface:
     #métodos para selecionar as ferramentas e deixar guardado nas variáveis
     def selecionar_livre(self):
         self.ferramenta_atual = "Mao_Livre"
+        self.mostrar_ferramenta_atual.configure(text=self.ferramenta_atual)
 
     def selecionar_reta(self):
         self.ferramenta_atual = "Reta"
+        self.mostrar_ferramenta_atual.configure(text=self.ferramenta_atual)
 
     def selecionar_retangulo(self):
         self.ferramenta_atual = "Retangulo"
+        self.mostrar_ferramenta_atual.configure(text=self.ferramenta_atual)
 
     def selecionar_oval(self):
         self.ferramenta_atual = "Oval"
+        self.mostrar_ferramenta_atual.configure(text=self.ferramenta_atual)
 
     def selecionar_circulo(self):
         self.ferramenta_atual = "Circulo"
+        self.mostrar_ferramenta_atual.configure(text=self.ferramenta_atual)
