@@ -2,9 +2,19 @@ class ControllerPaint:
     def __init__(self, model, view):
         self.model = model
         self.view = view
+
+        self.ini_x = 0
+        self.ini_y = 0
         
         self.view.controller = self
         self.view.criar_elementos()
+        self.ferramentas = {
+            "Mao_Livre": Mao_Livre, 
+            "Reta": Reta, 
+            "Retangulo": Retangulo, 
+            "Oval": Oval, 
+            "Circulo": Circulo
+        }
 
     #buscar a lista de cores no model para mandar futuramente para o view
     def obter_cor(self):
@@ -44,3 +54,35 @@ class ControllerPaint:
         self.model.ferramenta_atual = "Circulo"
         self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
 
+#Criação dos eventos de mouse#
+    def mouse_ini(self, event):
+        self.ini_x = event.x 
+        self.ini_y = event.y
+    
+    def mouse_move():
+        preview = self.criar_figura(event.x, event.y)
+        
+        if self.model.ferramenta_atual == "Mao_Livre":
+            self.model.figuras.append(preview)
+            self.ini_x = event.x
+            self.ini_y = event.y
+            self.view.desenhar_tudo(self.model.figuras)
+        else:
+            self.view.desenhar_tudo(self.model.figuras, preview=preview)
+    
+    
+    def fim_mouse(self, event):
+        figura = self.criar_figura(event.x, event.y)
+
+        if figura.validar():
+            self.model.figuras.append(figura)
+            
+        self.view.desenhar_tudo(self.model.figuras)
+
+    def criar_figura(self, x, y):
+        classe_da_figura = self.ferramentas.get(self.model.ferramenta_atual)
+        
+        if self.model.ferramenta_atual in ["Mao_Livre", "Reta"]:
+            return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda)
+        else:
+            return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
