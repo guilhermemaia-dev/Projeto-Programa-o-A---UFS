@@ -5,4 +5,4 @@ class ModelInterface:
         self.cor_selecionada_preenchimento = ''
         self.ferramenta_atual = "Mao_Livre"
         self.figuras = []
-        #self.ferramentas_traduzidas = {"Mao_Livre": Mao_Livre, "Reta": Reta, "Retangulo": Retangulo, "Oval": Oval, "Circulo": Circulo}
+        

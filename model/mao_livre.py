@@ -1,3 +1,5 @@
+from model.figuras import Figuras
+
 class Mao_Livre(Figuras):
     def __init__(self, ini_x, ini_y, posx, posy, cor):
         super().__init__(ini_x, ini_y, posx, posy)

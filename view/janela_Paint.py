@@ -83,3 +83,5 @@ class JanelaPaint:
     # metodo para alterar a ferramenta atual mostrada na tela
     def alterar_ferramenta_preview(self, ferramenta_atual):
         self.mostrar_ferramenta_atual.configure(text=ferramenta_atual)
+
+    #fazer o metodo para desenhar as figuras

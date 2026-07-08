@@ -1,3 +1,5 @@
+from model.figuras import Figuras
+
 class Oval(Figuras):
     def __init__(self, ini_x, ini_y, posx, posy, cor_borda, cor_preenchimento):
         super().__init__(ini_x, ini_y, posx, posy)
