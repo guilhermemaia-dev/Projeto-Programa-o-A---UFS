@@ -8,6 +8,5 @@ class Circulo(Figuras):
 
     def validar(self):
         raio = ((self.ini_x - self.posx) ** 2 + (self.ini_y - self.posy) ** 2) ** 0.5
-        return raio >= 5
+        return raio >= 7
         
-        #LEMBRAR DE VERIFICAR SE ESSA MARGEM ESTÁ BOA!!!#

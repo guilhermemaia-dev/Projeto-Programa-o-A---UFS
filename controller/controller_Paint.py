@@ -87,12 +87,12 @@ class ControllerPaint:
         self.y2 = event.y
 
         figura = self.criar_figura(event.x, event.y)
-
+        
         if not figura.validar():
             self.view.desenhar_figuras()
             return
-
-        self.model.figuras.append(figura)
+        else:
+            self.model.figuras.append(figura)
         self.view.desenhar_figuras(self.model.figuras)
 
     # os parâmetros x,y dependem do que for, por exemplo, se for o mouse_movimentacao (preview) que chama o metodo, então será passado x1,y1

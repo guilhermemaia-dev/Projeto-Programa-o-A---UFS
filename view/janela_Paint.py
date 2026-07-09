@@ -22,6 +22,12 @@ class JanelaPaint:
 
         label_seletor_cor = Label(self.janela, text="SELETOR DE CORES")
         label_seletor_cor.pack(side=LEFT, padx=10)
+        #Clique inicial
+        self.canvas.bind("<Button-1>", self.controller.mouse_ini)    
+        #Arrastar o mouse
+        self.canvas.bind("<B1-Motion>", self.controller.mouse_movimentacao) 
+        #Soltar o mouse
+        self.canvas.bind("<ButtonRelease-1>", self.controller.fim_mouse)   
 
         # pede ao controlador para obter a lista de cores, ele pede para o model, o model devolve a ele, e ele devolve para o view
         cores = self.controller.obter_cor()
@@ -85,3 +91,40 @@ class JanelaPaint:
         self.mostrar_ferramenta_atual.configure(text=ferramenta_atual)
 
     #fazer o metodo para desenhar as figuras
+    def desenhar_figuras(self, lista_figuras=None, preview=None):
+        # limpa a tela completa para redesenhar
+        self.canvas.delete("all")
+
+        # se nenhuma lista foi passada, busca direto do Model
+        if lista_figuras is None:
+            lista_figuras = self.controller.model.figuras
+
+        # desenha todas as figuras que já foram salvas na lista do Model
+        for figura in lista_figuras:
+            self.renderizar_forma(figura)
+
+        # se tiver um preview, desenha ele por cima de tudo
+        if preview is not None:
+            self.renderizar_forma(preview)
+    
+    #desenha na tela
+    def renderizar_forma(self, figura):
+        tipo = type(figura).__name__
+
+        if tipo in ["Mao_Livre", "Reta"]:
+            self.canvas.create_line(
+                figura.ini_x, figura.ini_y, figura.posx, figura.posy, 
+                fill=figura.cor
+            )
+        elif tipo in ["Retangulo", "Oval", "Circulo"]:
+            # Garante que não quebre caso os atributos tenham nomes levemente diferentes
+            cor_borda = getattr(figura, 'cor_borda', 'black')
+            cor_preench = getattr(figura, 'cor_preenchimento', '')
+            
+            if tipo == "Retangulo":
+                self.canvas.create_rectangle(figura.ini_x, figura.ini_y, figura.posx, figura.posy, outline=cor_borda, fill=cor_preench)
+            elif tipo == "Oval":
+                self.canvas.create_oval(figura.ini_x, figura.ini_y, figura.posx, figura.posy, outline=cor_borda, fill=cor_preench)
+            else:
+                self.raio = (((figura.ini_x - figura.posx) ** 2) + ((figura.ini_y - figura.posy)) ** 2) ** 0.5
+                self.canvas.create_oval(figura.ini_x - self.raio, figura.ini_y - self.raio, figura.ini_x + self.raio, figura.ini_y + self.raio, outline=cor_borda, fill=cor_preench)

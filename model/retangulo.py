@@ -7,6 +7,4 @@ class Retangulo(Figuras):
         self.cor_preenchimento = cor_preenchimento
     
     def validar(self):
-        return (self.posx - self.ini_x)**2 >= 20 or (self.posy - self.ini_y)**2 >= 20
-
-        #LEMBRAR DE VERIFICAR SE ESSA MARGEM ESTÁ BOA!!!#
+        return (self.posx - self.ini_x)**2 >= 15 and (self.posy - self.ini_y)**2 >= 15
