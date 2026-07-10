@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import colorchooser
+import os
 
 class JanelaPaint:
     def __init__(self):
@@ -44,7 +45,8 @@ class JanelaPaint:
             bot_cor.pack(side=LEFT, pady=1)
 
         #criar botão para escolher mais cores
-        self.imagem = PhotoImage(file="maiscores.png")
+        caminho = os.path.join(os.path.dirname(__file__), "maiscores.png")
+        self.imagem = PhotoImage(file=caminho)
         self.imagem = self.imagem.subsample(10, 11)
         bot_mais_cores = Button(self.janela, image=self.imagem,command=self.abrir_seletor_cor)
         bot_mais_cores.pack(side=LEFT)
