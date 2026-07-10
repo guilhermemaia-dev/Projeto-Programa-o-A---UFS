@@ -3,6 +3,7 @@ from model.reta import Reta
 from model.retangulo import Retangulo
 from model.oval import Oval
 from model.circulo import Circulo
+from model.borracha import Borracha
 
 
 class ControllerPaint:
@@ -13,7 +14,7 @@ class ControllerPaint:
         self.ini_y = 0
         self.view.controller = self
         self.view.criar_elementos()
-        self.ferramentas = {"Mao_Livre": Mao_Livre, "Reta": Reta, "Retangulo":Retangulo, "Oval": Oval, "Circulo": Circulo}
+        self.ferramentas = {"Mao_Livre": Mao_Livre, "Reta": Reta, "Retangulo":Retangulo, "Oval": Oval, "Circulo": Circulo, "Borracha": Borracha }
         self.selecionar_livre()
         
 
@@ -54,7 +55,10 @@ class ControllerPaint:
     def selecionar_circulo(self):
         self.model.ferramenta_atual = "Circulo"
         self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
-
+    
+    def selecionar_borracha(self):
+        self.model.ferramenta_atual = "Borracha"
+        self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
 
 #Criação dos eventos de mouse#
     def mouse_ini(self, event):
@@ -70,7 +74,7 @@ class ControllerPaint:
         
         # se for mao_livre então vai adicionando na hora do movimento todos os previews e desenhando a figura, ou seja, desenhando o preview
 
-        if self.model.ferramenta_atual == "Mao_Livre":
+        if self.model.ferramenta_atual in ["Mao_Livre","Borracha"]:
             self.model.figuras.append(preview)
             self.ini_x = event.x
             self.ini_y = event.y
@@ -100,7 +104,14 @@ class ControllerPaint:
     def criar_figura(self, x, y):
         classe_da_figura = self.ferramentas.get(self.model.ferramenta_atual)
         
-        if self.model.ferramenta_atual in ["Mao_Livre", "Reta"]:
+        if self.model.ferramenta_atual in ["Mao_Livre", "Reta",]:
             return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda)
+        elif self.model.ferramenta_atual == "Borracha":
+            return classe_da_figura(self.ini_x,self.ini_y,x,y,"White")
         else:
             return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
+        
+#criação do botão para limpar a tela esvaziando a lista de figuras
+    def limpar_tela(self):
+        self.model.figuras = []
+        self.view.desenhar_figuras()

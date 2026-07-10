@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import colorchooser
 
 class JanelaPaint:
     def __init__(self):
@@ -31,7 +32,8 @@ class JanelaPaint:
 
         # pede ao controlador para obter a lista de cores, ele pede para o model, o model devolve a ele, e ele devolve para o view
         cores = self.controller.obter_cor()
-        
+
+
         #cria os botões do seletor de cores e quando clica, manda uma mensagem para o controller para informar a cor clicada e o estado do marcador
         for cor in cores:
             if cor == "#E7E7E7":
@@ -41,12 +43,19 @@ class JanelaPaint:
 
             bot_cor.pack(side=LEFT, pady=1)
 
+        #criar botão para escolher mais cores
+        self.imagem = PhotoImage(file="maiscores.png")
+        self.imagem = self.imagem.subsample(10, 11)
+        bot_mais_cores = Button(self.janela, image=self.imagem,command=self.abrir_seletor_cor)
+        bot_mais_cores.pack(side=LEFT)
+
         #criar os botões do seletor de figuras e colocar na janela logo
         bot_livre = Button(self.janela, text="MÃO LIVRE", command=self.controller.selecionar_livre)
         bot_reta = Button(self.janela, text="RETA", command=self.controller.selecionar_reta)
         bot_retangulo = Button(self.janela, text="RETANGULAR", command=self.controller.selecionar_retangulo)
         bot_oval = Button(self.janela, text="OVAL", command=self.controller.selecionar_oval)
         bot_circulo = Button(self.janela, text="CIRCULAR", command=self.controller.selecionar_circulo)
+        bot_borracha = Button(self.janela, text="BORRACHA", command=self.controller.selecionar_borracha)
 
         #Coloca os botões na janela
         bot_livre.pack(side=LEFT)
@@ -54,7 +63,11 @@ class JanelaPaint:
         bot_retangulo.pack(side=LEFT)
         bot_oval.pack(side=LEFT)
         bot_circulo.pack(side=LEFT)
+        bot_borracha.pack(side=LEFT)
 
+        #cria o botão para apagar tudo
+        bot_limpar = Button(self.janela, text="LIMPAR",command=self.controller.limpar_tela)
+        bot_limpar.pack(side=LEFT)
 
         # mostra a cor da borda atual na interface
         label_indicar_cor_borda = Label(self.janela, text="BORDA:")
@@ -106,6 +119,13 @@ class JanelaPaint:
         # se tiver um preview, desenha ele por cima de tudo
         if preview is not None:
             self.renderizar_forma(preview)
+
+
+        #abre o seletor e manda pro controller a cor escolhida pelo usuario
+    def abrir_seletor_cor(self):
+        cor = colorchooser.askcolor()[1]
+        if cor:
+            self.controller.receberAcor(cor, self.estado_marcador.get())
     
     #desenha na tela
     def renderizar_forma(self, figura):
@@ -115,6 +135,11 @@ class JanelaPaint:
             self.canvas.create_line(
                 figura.ini_x, figura.ini_y, figura.posx, figura.posy, 
                 fill=figura.cor
+            )
+        elif tipo == "Borracha":
+            self.canvas.create_line(
+                figura.ini_x, figura.ini_y, figura.posx, figura.posy,
+                fill=figura.cor, width=figura.tamanho
             )
         elif tipo in ["Retangulo", "Oval", "Circulo"]:
             # Garante que não quebre caso os atributos tenham nomes levemente diferentes
