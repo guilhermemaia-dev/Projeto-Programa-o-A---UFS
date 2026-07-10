@@ -5,5 +5,8 @@ class Mao_Livre(Figuras):
         super().__init__(ini_x, ini_y, posx, posy)
         self.cor = cor if cor else "black"
 
+    def pegar_dados(self):
+        return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor)
+
     def validar(self):
-        return (self.posx - self.ini_x)**2 > 0 or (self.posy - self.ini_y)**2 > 0
+        return abs(self.posx - self.ini_x) > 0 or abs(self.posy - self.ini_y) > 0

@@ -14,7 +14,7 @@ class ControllerPaint:
         self.ini_y = 0
         self.view.controller = self
         self.view.criar_elementos()
-        self.ferramentas = {"Mao_Livre": Mao_Livre, "Reta": Reta, "Retangulo":Retangulo, "Oval": Oval, "Circulo": Circulo, "Borracha": Borracha }
+        self.ferramentas = {"Mao_Livre": Mao_Livre, "Reta": Reta, "Retangulo":Retangulo, "Oval": Oval, "Circulo": Circulo, "Borracha": Borracha}
         self.selecionar_livre()
         
 
@@ -55,10 +55,11 @@ class ControllerPaint:
     def selecionar_circulo(self):
         self.model.ferramenta_atual = "Circulo"
         self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
-    
+
     def selecionar_borracha(self):
         self.model.ferramenta_atual = "Borracha"
         self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
+
 
 #Criação dos eventos de mouse#
     def mouse_ini(self, event):
@@ -72,7 +73,7 @@ class ControllerPaint:
 
         preview = self.criar_figura(self.x1, self.y1)
         
-        # se for mao_livre então vai adicionando na hora do movimento todos os previews e desenhando a figura, ou seja, desenhando o preview
+        # se for mao_livre ou borracha então vai adicionando na hora do movimento todos os previews e desenhando a figura, ou seja, desenhando o preview
 
         if self.model.ferramenta_atual in ["Mao_Livre","Borracha"]:
             self.model.figuras.append(preview)
@@ -80,10 +81,14 @@ class ControllerPaint:
             self.ini_y = event.y
             self.view.desenhar_figuras(self.model.figuras)
         else:
-            self.view.desenhar_figuras(self.model.figuras, preview=preview)
+            #desenha todas as figuras ja feitas
+            self.view.desenhar_figuras(self.model.figuras)
+            #recebe todos os previews ja feitos para serem desenhados
+            self.view.desenhar_figuras([preview], apagarAtela=False)
     
 
-     #quando solta o mouse pega as coordenadas finais (x2,y2) e cria a figura final com essas coordenadas
+
+    #quando solta o mouse pega as coordenadas finais (x2,y2) e cria a figura final com essas coordenadas
     def fim_mouse(self, event):
         #verifica se a figura é valida ou não (cada figura sabe se ela mesmo é valida ou se não é)
         # se não for válida, ela não se desenha, caso contrário, leva até o model e adiciona na lista das figuras e desenha
@@ -93,25 +98,25 @@ class ControllerPaint:
         figura = self.criar_figura(event.x, event.y)
         
         if not figura.validar():
-            self.view.desenhar_figuras()
+            self.view.desenhar_figuras(self.model.figuras)
             return
-        else:
-            self.model.figuras.append(figura)
+
+        self.model.figuras.append(figura)
         self.view.desenhar_figuras(self.model.figuras)
 
-    # os parâmetros x,y dependem do que for, por exemplo, se for o mouse_movimentacao (preview) que chama o metodo, então será passado x1,y1
-    # caso for fim_mouse será passado x2,y2
+
+    # os parâmetros x,y dependem do que for, por exemplo, se for o mouse_movimentacao (preview) que chama o metodo, então será passado x1,y1, caso for fim_mouse será passado x2,y2
     def criar_figura(self, x, y):
         classe_da_figura = self.ferramentas.get(self.model.ferramenta_atual)
         
-        if self.model.ferramenta_atual in ["Mao_Livre", "Reta",]:
+        if self.model.ferramenta_atual in ["Mao_Livre", "Reta"]:
             return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda)
         elif self.model.ferramenta_atual == "Borracha":
-            return classe_da_figura(self.ini_x,self.ini_y,x,y,"White")
+            return classe_da_figura(self.ini_x,self.ini_y,x,y)
         else:
             return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
         
 #criação do botão para limpar a tela esvaziando a lista de figuras
     def limpar_tela(self):
         self.model.figuras = []
-        self.view.desenhar_figuras()
+        self.view.desenhar_figuras(self.model.figuras)

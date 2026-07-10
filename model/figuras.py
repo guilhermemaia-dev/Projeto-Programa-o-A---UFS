@@ -6,7 +6,14 @@ class Figuras(ABC):
         self.ini_y = ini_y
         self.posx = posx
         self.posy = posy
+    
+    #metodo para validar a figura antes de criar
     @abstractmethod
     def validar(self):
+        pass
+
+    # serve para retornar os dados das figuras
+    @abstractmethod
+    def pegar_dados(self):
         pass
 

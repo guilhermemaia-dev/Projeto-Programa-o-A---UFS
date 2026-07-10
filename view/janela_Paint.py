@@ -2,6 +2,13 @@ from tkinter import *
 from tkinter import colorchooser
 import os
 
+from model.mao_livre import Mao_Livre
+from model.reta import Reta
+from model.retangulo import Retangulo
+from model.oval import Oval
+from model.circulo import Circulo
+from model.borracha import Borracha
+
 class JanelaPaint:
     def __init__(self):
         self.janela = Tk()
@@ -24,17 +31,14 @@ class JanelaPaint:
 
         label_seletor_cor = Label(self.janela, text="SELETOR DE CORES")
         label_seletor_cor.pack(side=LEFT, padx=10)
-        #Clique inicial
+
         self.canvas.bind("<Button-1>", self.controller.mouse_ini)    
-        #Arrastar o mouse
         self.canvas.bind("<B1-Motion>", self.controller.mouse_movimentacao) 
-        #Soltar o mouse
         self.canvas.bind("<ButtonRelease-1>", self.controller.fim_mouse)   
 
         # pede ao controlador para obter a lista de cores, ele pede para o model, o model devolve a ele, e ele devolve para o view
         cores = self.controller.obter_cor()
-
-
+        
         #cria os botões do seletor de cores e quando clica, manda uma mensagem para o controller para informar a cor clicada e o estado do marcador
         for cor in cores:
             if cor == "#E7E7E7":
@@ -93,6 +97,7 @@ class JanelaPaint:
         self.mostrar_ferramenta_atual.pack(side=LEFT,padx=10)
 
 
+
     #metodo para o próprio view atualizar as cores do preview na tela
     def alterar_cor_preview(self, cor_borda, cor_preenchimento):
         self.label_cor_selecionadaBorda.configure(bg=cor_borda)
@@ -105,53 +110,40 @@ class JanelaPaint:
     def alterar_ferramenta_preview(self, ferramenta_atual):
         self.mostrar_ferramenta_atual.configure(text=ferramenta_atual)
 
-    #fazer o metodo para desenhar as figuras
-    def desenhar_figuras(self, lista_figuras=None, preview=None):
-        # limpa a tela completa para redesenhar
-        self.canvas.delete("all")
 
-        # se nenhuma lista foi passada, busca direto do Model
-        if lista_figuras is None:
-            lista_figuras = self.controller.model.figuras
-
-        # desenha todas as figuras que já foram salvas na lista do Model
-        for figura in lista_figuras:
-            self.renderizar_forma(figura)
-
-        # se tiver um preview, desenha ele por cima de tudo
-        if preview is not None:
-            self.renderizar_forma(preview)
-
-
-        #abre o seletor e manda pro controller a cor escolhida pelo usuario
+    #abre o seletor e manda pro controller a cor escolhida pelo usuario
     def abrir_seletor_cor(self):
         cor = colorchooser.askcolor()[1]
         if cor:
             self.controller.receberAcor(cor, self.estado_marcador.get())
-    
-    #desenha na tela
-    def renderizar_forma(self, figura):
-        tipo = type(figura).__name__
 
-        if tipo in ["Mao_Livre", "Reta"]:
-            self.canvas.create_line(
-                figura.ini_x, figura.ini_y, figura.posx, figura.posy, 
-                fill=figura.cor
-            )
-        elif tipo == "Borracha":
-            self.canvas.create_line(
-                figura.ini_x, figura.ini_y, figura.posx, figura.posy,
-                fill=figura.cor, width=figura.tamanho
-            )
-        elif tipo in ["Retangulo", "Oval", "Circulo"]:
-            # Garante que não quebre caso os atributos tenham nomes levemente diferentes
-            cor_borda = getattr(figura, 'cor_borda', 'black')
-            cor_preench = getattr(figura, 'cor_preenchimento', '')
-            
-            if tipo == "Retangulo":
-                self.canvas.create_rectangle(figura.ini_x, figura.ini_y, figura.posx, figura.posy, outline=cor_borda, fill=cor_preench)
-            elif tipo == "Oval":
-                self.canvas.create_oval(figura.ini_x, figura.ini_y, figura.posx, figura.posy, outline=cor_borda, fill=cor_preench)
-            else:
-                self.raio = (((figura.ini_x - figura.posx) ** 2) + ((figura.ini_y - figura.posy)) ** 2) ** 0.5
-                self.canvas.create_oval(figura.ini_x - self.raio, figura.ini_y - self.raio, figura.ini_x + self.raio, figura.ini_y + self.raio, outline=cor_borda, fill=cor_preench)
+
+
+    # metodo simplificado que desenha tudo direto
+    def desenhar_figuras(self, lista_figuras, apagarAtela=True):
+        
+        # se puder apagar a tela, apaga
+        if apagarAtela:
+            self.canvas.delete("all")
+
+
+        # pede os dados de cada figura e desenha as figuras
+        for figura in lista_figuras:
+            if isinstance(figura, Mao_Livre) or isinstance(figura, Reta):
+                ini_x, ini_y, posx, posy, cor = figura.pegar_dados()
+                self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor)
+
+            elif isinstance(figura, Borracha):
+                self.canvas.create_line( figura.ini_x, figura.ini_y, figura.posx, figura.posy, fill=figura.cor, width=figura.tamanho)
+                
+            elif isinstance(figura, Retangulo):
+                ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
+                self.canvas.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
+                
+            elif isinstance(figura, Oval):
+                ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
+                self.canvas.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
+                
+            elif isinstance(figura, Circulo):
+                x0, y0, x1, y1, cor_borda, cor_preench = figura.pegar_dados()
+                self.canvas.create_oval(x0, y0, x1, y1, outline=cor_borda, fill=cor_preench)
