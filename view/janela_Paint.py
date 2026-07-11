@@ -8,6 +8,7 @@ from model.retangulo import Retangulo
 from model.oval import Oval
 from model.circulo import Circulo
 from model.borracha import Borracha
+from model.quadrado import Quadrado
 
 class JanelaPaint:
     def __init__(self):
@@ -56,12 +57,12 @@ class JanelaPaint:
         bot_mais_cores.pack(side=LEFT)
 
         #criar os botões do seletor de figuras e colocar na janela logo
-        bot_livre = Button(self.janela, text="MÃO LIVRE", command=self.controller.selecionar_livre)
-        bot_reta = Button(self.janela, text="RETA", command=self.controller.selecionar_reta)
-        bot_retangulo = Button(self.janela, text="RETANGULAR", command=self.controller.selecionar_retangulo)
-        bot_oval = Button(self.janela, text="OVAL", command=self.controller.selecionar_oval)
-        bot_circulo = Button(self.janela, text="CIRCULAR", command=self.controller.selecionar_circulo)
-        bot_borracha = Button(self.janela, text="BORRACHA", command=self.controller.selecionar_borracha)
+        bot_livre = Button(self.janela, text="MÃO LIVRE", command=lambda: self.controller.selecionar_ferramenta("Mao_Livre"))
+        bot_reta = Button(self.janela, text="RETA", command=lambda: self.controller.selecionar_ferramenta("Reta"))
+        bot_retangulo = Button(self.janela, text="RETANGULAR", command=lambda: self.controller.selecionar_ferramenta("Retangulo"))
+        bot_oval = Button(self.janela, text="OVAL", command=lambda: self.controller.selecionar_ferramenta("Oval"))
+        bot_circulo = Button(self.janela, text="CIRCULAR", command=lambda: self.controller.selecionar_ferramenta("Circulo"))
+        bot_borracha = Button(self.janela, text="BORRACHA", command=lambda: self.controller.selecionar_ferramenta("Borracha"))
 
         #Coloca os botões na janela
         bot_livre.pack(side=LEFT)

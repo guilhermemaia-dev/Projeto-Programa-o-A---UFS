@@ -4,5 +4,6 @@ class ModelInterface:
         self.cor_selecionada_borda = "#000000"
         self.cor_selecionada_preenchimento = ''
         self.ferramenta_atual = "Mao_Livre"
+        self.state_atual = None
         self.figuras = []
         

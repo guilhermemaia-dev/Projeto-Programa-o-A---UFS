@@ -1,21 +1,22 @@
-from model.mao_livre import Mao_Livre
-from model.reta import Reta
-from model.retangulo import Retangulo
-from model.oval import Oval
-from model.circulo import Circulo
-from model.borracha import Borracha
-from model.quadrado import Quadrado
+from state.S_mao_livre import S_Mao_Livre
+from state.S_reta import S_Reta
+from state.S_retangulo import S_Retangulo
+from state.S_oval import S_Oval
+from state.S_circulo import S_Circulo
+from state.S_borracha import S_Borracha
+from state.S_quadrado import S_Quadrado
+
 
 class ControllerPaint:
     def __init__(self, model, view):
         self.model = model
         self.view = view
-        self.ini_x = 0
-        self.ini_y = 0
         self.view.controller = self
+
+        self.states = {"Mao_Livre": S_Mao_Livre, "Reta": S_Reta, "Retangulo":S_Retangulo, "Oval": S_Oval, "Circulo": S_Circulo, "Borracha": S_Borracha, "Quadrado": S_Quadrado}
+
         self.view.criar_elementos()
-        self.ferramentas = {"Mao_Livre": Mao_Livre, "Reta": Reta, "Retangulo":Retangulo, "Oval": Oval, "Circulo": Circulo, "Borracha": Borracha}
-        self.selecionar_livre()
+        self.selecionar_ferramenta("Mao_Livre")
         
 
     #buscar a lista de cores no model para mandar futuramente para o view
@@ -35,32 +36,30 @@ class ControllerPaint:
         self.view.alterar_cor_preview(self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
 
 
-    #métodos que mandam para o model qual a ferramenta atual selecionada
-    def selecionar_livre(self):
-        self.model.ferramenta_atual = "Mao_Livre"
-        self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
+    # receber a ferramenta de forma mais simplificada quando clica no botão, cria logo a figura e manda para a view atualizar a tela de preview
+    def selecionar_ferramenta(self, ferramenta):
+        atual = self.states.get(ferramenta)
+        self.model.ferramenta_atual = ferramenta
+        self.model.state_atual = atual(self.model, self.view)
+        self.view.alterar_ferramenta_preview(ferramenta)
 
-    def selecionar_reta(self):
-        self.model.ferramenta_atual = "Reta"
-        self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
+    def mouse_ini(self, event):
+        self.model.state_atual.mouse_ini(event)
 
-    def selecionar_retangulo(self):
-        self.model.ferramenta_atual = "Retangulo"
-        self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
+    def mouse_movimentacao(self, event):
+        self.model.state_atual.mouse_movimentacao(event)
 
-    def selecionar_oval(self):
-        self.model.ferramenta_atual = "Oval"
-        self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
+    def fim_mouse(self, event):
+        self.model.state_atual.fim_mouse(event)
 
-    def selecionar_circulo(self):
-        self.model.ferramenta_atual = "Circulo"
-        self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
-
-    def selecionar_borracha(self):
-        self.model.ferramenta_atual = "Borracha"
-        self.view.alterar_ferramenta_preview(self.model.ferramenta_atual)
+    #criação do botão para limpar a tela esvaziando a lista de figuras
+    def limpar_tela(self):
+        self.model.figuras = []
+        self.view.desenhar_figuras(self.model.figuras)
 
 
+# sera deletado dps, apenas como BASE para criar 
+'''
 #Criação dos eventos de mouse#
     def mouse_ini(self, event):
         self.ini_x = event.x 
@@ -103,8 +102,11 @@ class ControllerPaint:
 
         self.model.figuras.append(figura)
         self.view.desenhar_figuras(self.model.figuras)
+'''
 
-
+# será deletado tbm dps
+# parte para ser a base de criar o state das outras figuras como a borracha e os demais que faltam
+'''
     # os parâmetros x,y dependem do que for, por exemplo, se for o mouse_movimentacao (preview) que chama o metodo, então será passado x1,y1, caso for fim_mouse será passado x2,y2
     def criar_figura(self, x, y):
         classe_da_figura = self.ferramentas.get(self.model.ferramenta_atual)
@@ -116,7 +118,4 @@ class ControllerPaint:
         else:
             return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
         
-#criação do botão para limpar a tela esvaziando a lista de figuras
-    def limpar_tela(self):
-        self.model.figuras = []
-        self.view.desenhar_figuras(self.model.figuras)
+'''
