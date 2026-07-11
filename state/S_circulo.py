@@ -2,12 +2,6 @@ from state.S_ferramentas import Ferramenta
 from model.circulo import Circulo
 
 class S_Circulo(Ferramenta):
-    def __init__(self, model, view):
-        self.model = model
-        self.view = view
-        self.ini_x = 0
-        self.ini_y = 0
-
     def criar_figura(self, x, y):
         return Circulo(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
     
