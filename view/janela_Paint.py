@@ -147,3 +147,7 @@ class JanelaPaint:
             elif isinstance(figura, Circulo):
                 x0, y0, x1, y1, cor_borda, cor_preench = figura.pegar_dados()
                 self.canvas.create_oval(x0, y0, x1, y1, outline=cor_borda, fill=cor_preench)
+
+            elif isinstance(figura, Quadrado):
+                x0, y0, cor_borda, cor_preench, tamanho, x_quadrado, y_quadrado = figura.pegar_dados()
+                self.canvas.create_rectangle(x0, y0, x_quadrado, y_quadrado, outline=cor_borda, fill=cor_preench) #essa vai ser a fórmula da construção do quadrado#

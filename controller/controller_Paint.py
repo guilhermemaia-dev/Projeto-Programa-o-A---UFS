@@ -4,7 +4,7 @@ from model.retangulo import Retangulo
 from model.oval import Oval
 from model.circulo import Circulo
 from model.borracha import Borracha
-
+from model.quadrado import Quadrado
 
 class ControllerPaint:
     def __init__(self, model, view):
