@@ -5,7 +5,7 @@ from state.S_oval import S_Oval
 from state.S_circulo import S_Circulo
 from state.S_borracha import S_Borracha
 from state.S_quadrado import S_Quadrado
-
+from model.arquivo import Arquivo
 
 class ControllerPaint:
     def __init__(self, model, view):
@@ -17,7 +17,8 @@ class ControllerPaint:
 
         self.view.criar_elementos()
         self.selecionar_ferramenta("Mao_Livre")
-        
+        #Atualização da etapa 4
+        self.gerenciador_arquivo = Arquivo(self.model)
 
     #buscar a lista de cores no model para mandar futuramente para o view
     def obter_cor(self):
@@ -56,66 +57,24 @@ class ControllerPaint:
     def limpar_tela(self):
         self.model.figuras = []
         self.view.desenhar_figuras(self.model.figuras)
-
-
-# sera deletado dps, apenas como BASE para criar 
-'''
-#Criação dos eventos de mouse#
-    def mouse_ini(self, event):
-        self.ini_x = event.x 
-        self.ini_y = event.y
-
-    # metodo que capta as coordenadas enquanto movimenta o mouse e continua criando a figura (fazendo o preview)
-    def mouse_movimentacao(self, event):
-        self.x1 = event.x
-        self.y1 = event.y
-
-        preview = self.criar_figura(self.x1, self.y1)
-        
-        # se for mao_livre ou borracha então vai adicionando na hora do movimento todos os previews e desenhando a figura, ou seja, desenhando o preview
-
-        if self.model.ferramenta_atual in ["Mao_Livre","Borracha"]:
-            self.model.figuras.append(preview)
-            self.ini_x = event.x
-            self.ini_y = event.y
-            self.view.desenhar_figuras(self.model.figuras)
-        else:
-            #desenha todas as figuras ja feitas
-            self.view.desenhar_figuras(self.model.figuras)
-            #recebe todos os previews ja feitos para serem desenhados
-            self.view.desenhar_figuras([preview], apagarAtela=False)
     
 
-
-    #quando solta o mouse pega as coordenadas finais (x2,y2) e cria a figura final com essas coordenadas
-    def fim_mouse(self, event):
-        #verifica se a figura é valida ou não (cada figura sabe se ela mesmo é valida ou se não é)
-        # se não for válida, ela não se desenha, caso contrário, leva até o model e adiciona na lista das figuras e desenha
-        self.x2 = event.x
-        self.y2 = event.y
-
-        figura = self.criar_figura(event.x, event.y)
+    #Funções de salvar e abrir arquivos#
+    def salvar_desenho(self):
+        #Pede o caminho para o View#
+        caminho = self.view.pedir_caminho_salvar()
         
-        if not figura.validar():
+        #Se o usuário escolheu um caminho, salva#
+        if caminho: 
+            self.gerenciador_arquivo.salvar_para_arquivo(caminho)
+
+    def abrir_desenho(self):
+        #Faz o mesmo do de salvar_desenho
+        caminho = self.view.pedir_caminho_abrir()
+        
+        if caminho:
+            #Manda o Model carregar os dados#
+            self.gerenciador_arquivo.carregar_de_arquivo(caminho)
+            
+            #Pede para a View desenhar a nova lista de figuras#
             self.view.desenhar_figuras(self.model.figuras)
-            return
-
-        self.model.figuras.append(figura)
-        self.view.desenhar_figuras(self.model.figuras)
-'''
-
-# será deletado tbm dps
-# parte para ser a base de criar o state das outras figuras como a borracha e os demais que faltam
-'''
-    # os parâmetros x,y dependem do que for, por exemplo, se for o mouse_movimentacao (preview) que chama o metodo, então será passado x1,y1, caso for fim_mouse será passado x2,y2
-    def criar_figura(self, x, y):
-        classe_da_figura = self.ferramentas.get(self.model.ferramenta_atual)
-        
-        if self.model.ferramenta_atual in ["Mao_Livre", "Reta"]:
-            return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda)
-        elif self.model.ferramenta_atual == "Borracha":
-            return classe_da_figura(self.ini_x,self.ini_y,x,y)
-        else:
-            return classe_da_figura(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
-        
-'''

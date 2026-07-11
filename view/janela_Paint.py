@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import colorchooser
 import os
-
+from tkinter import filedialog
 from model.mao_livre import Mao_Livre
 from model.reta import Reta
 from model.retangulo import Retangulo
@@ -96,7 +96,12 @@ class JanelaPaint:
         label_indicar_ferramenta_atual.pack(side=LEFT, padx=10)
         self.mostrar_ferramenta_atual = Label(self.janela, text=self.controller.model.ferramenta_atual)
         self.mostrar_ferramenta_atual.pack(side=LEFT,padx=10)
-
+       # #Botões de arquivos, PARA CONCERTAR, ele não aparece no menu, mas o comando está correto!!!!!!!!!!!!!!!!!!!!# #
+        bot_salvar = Button(self.janela, text="SALVAR", command=self.controller.salvar_desenho)
+        bot_abrir = Button(self.janela, text="ABRIR", command=self.controller.abrir_desenho)
+        bot_salvar.pack(side=TOP)
+        bot_abrir.pack(side=TOP)
+        
 
 
     #metodo para o próprio view atualizar as cores do preview na tela
@@ -152,3 +157,15 @@ class JanelaPaint:
             elif isinstance(figura, Quadrado):
                 x0, y0, cor_borda, cor_preench, tamanho, x_quadrado, y_quadrado = figura.pegar_dados()
                 self.canvas.create_rectangle(x0, y0, x_quadrado, y_quadrado, outline=cor_borda, fill=cor_preench) #essa vai ser a fórmula da construção do quadrado#
+
+#Janela de pedir arquivo/caminho#
+    def pedir_caminho_salvar(self):
+        return filedialog.asksaveasfilename(
+            title="Salvar Arquivo",
+            defaultextension=".paint",
+            filetypes=[("Arquivos Paint", "*.paint"), ("Todos os Arquivos", "*.*")])
+
+    def pedir_caminho_abrir(self):
+        return filedialog.askopenfilename(
+            title="Abrir Arquivo",
+            filetypes=[("Arquivos Paint", "*.paint"), ("Todos os Arquivos", "*.*")])
