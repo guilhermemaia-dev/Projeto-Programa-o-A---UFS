@@ -20,7 +20,7 @@ class JanelaPaint:
 
     def configuracao_janela(self):
         self.janela.title("PAINT 2.1")
-        self.janela.geometry("1700x900")
+        self.janela.geometry("1600x900")
 
 
     def criar_elementos(self):
@@ -76,17 +76,17 @@ class JanelaPaint:
         
 
         #Coloca os botões na janela
-        bot_livre.pack(side=LEFT)
-        bot_reta.pack(side=LEFT)
-        bot_retangulo.pack(side=LEFT)
-        bot_oval.pack(side=LEFT)
-        bot_circulo.pack(side=LEFT)
-        bot_quadrado.pack(side=LEFT)
-        bot_borracha.pack(side=LEFT)
+        bot_livre.pack(side=LEFT, padx=1)
+        bot_reta.pack(side=LEFT, padx=1)
+        bot_retangulo.pack(side=LEFT, padx=1)
+        bot_oval.pack(side=LEFT, padx=1)
+        bot_circulo.pack(side=LEFT, padx=1)
+        bot_quadrado.pack(side=LEFT, padx=1)
+        bot_borracha.pack(side=LEFT, padx=1)
         
 
         #cria o botão para apagar tudo
-        bot_limpar = Button(frame_linha2, text="LIMPAR",command=self.controller.limpar_tela)
+        bot_limpar = Button(frame_linha2, text="LIMPAR", bg="#9c5b56", fg="white" ,command=self.controller.limpar_tela)
         bot_limpar.pack(side=LEFT)
 
         # mostra a cor da borda atual na interface
