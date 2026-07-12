@@ -44,7 +44,10 @@ class JanelaPaint:
 
         self.canvas.bind("<Button-1>", self.controller.mouse_ini)    
         self.canvas.bind("<B1-Motion>", self.controller.mouse_movimentacao) 
-        self.canvas.bind("<ButtonRelease-1>", self.controller.fim_mouse)   
+        self.canvas.bind("<ButtonRelease-1>", self.controller.fim_mouse)
+
+        #cria uma bind para crtl+z apagar a ultima figura desenhada
+        self.janela.bind("<Control-z>", self.controller.ctrl_z)   
 
         # pede ao controlador para obter a lista de cores, ele pede para o model, o model devolve a ele, e ele devolve para o view
         cores = self.controller.obter_cor()
@@ -141,6 +144,30 @@ class JanelaPaint:
         if cor:
             self.controller.receberAcor(cor, self.estado_marcador.get())
 
+    #Criação de metodos para desenhar as figuras
+    def desenhar_mao_livre_ou_reta(self, figura):
+        ini_x, ini_y, posx, posy, cor = figura.pegar_dados()
+        self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor)
+    
+    def desenhar_borracha(self,figura):
+        ini_x, ini_y, posx, posy, cor, tamanho = figura.pegar_dados()
+        self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor, width=tamanho)
+    
+    def desenhar_retangulo(self,figura):
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
+        self.canvas.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
+
+    def desenhar_oval(self,figura):
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
+        self.canvas.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
+
+    def desenhar_circulo(self,figura):
+        x0, y0, x1, y1, cor_borda, cor_preench = figura.pegar_dados()
+        self.canvas.create_oval(x0, y0, x1, y1, outline=cor_borda, fill=cor_preench)
+
+    def desenhar_quadrado(self,figura):
+        x0, y0, cor_borda, cor_preench, tamanho, x_quadrado, y_quadrado = figura.pegar_dados()
+        self.canvas.create_rectangle(x0, y0, x_quadrado, y_quadrado, outline=cor_borda, fill=cor_preench)
 
 
     # metodo simplificado que desenha tudo direto
@@ -150,32 +177,25 @@ class JanelaPaint:
         if apagarAtela:
             self.canvas.delete("all")
 
+        #cria um dicionario com as figuras existentes no programa e relacionando as figuras com os metodos
+        dicionario_figuras = {
+            Mao_Livre : self.desenhar_mao_livre_ou_reta,
+            Reta : self.desenhar_mao_livre_ou_reta,
+            Borracha : self.desenhar_borracha,
+            Retangulo : self.desenhar_retangulo,
+            Oval : self.desenhar_oval,
+            Circulo : self.desenhar_circulo,
+            Quadrado :self.desenhar_quadrado
+        }
 
-        # pede os dados de cada figura e desenha as figuras
+        #cria um loop que primeiro analisa qual o tipo de figura, olha se essa figura esta no dicionario e se estiver executa o metodo associado no dicionario
         for figura in lista_figuras:
-            if isinstance(figura, Mao_Livre) or isinstance(figura, Reta):
-                ini_x, ini_y, posx, posy, cor = figura.pegar_dados()
-                self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor)
+            tipo_figura = type(figura)
+            if tipo_figura in dicionario_figuras:
+                metodo_figura = dicionario_figuras[tipo_figura]
+                metodo_figura(figura)
 
-            elif isinstance(figura, Borracha):
-                ini_x, ini_y, posx, posy, cor, tamanho = figura.pegar_dados()
-                self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor, width=tamanho)
-                
-            elif isinstance(figura, Retangulo):
-                ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-                self.canvas.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
-                
-            elif isinstance(figura, Oval):
-                ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-                self.canvas.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
-                
-            elif isinstance(figura, Circulo):
-                x0, y0, x1, y1, cor_borda, cor_preench = figura.pegar_dados()
-                self.canvas.create_oval(x0, y0, x1, y1, outline=cor_borda, fill=cor_preench)
 
-            elif isinstance(figura, Quadrado):
-                x0, y0, cor_borda, cor_preench, tamanho, x_quadrado, y_quadrado = figura.pegar_dados()
-                self.canvas.create_rectangle(x0, y0, x_quadrado, y_quadrado, outline=cor_borda, fill=cor_preench) #essa vai ser a fórmula da construção do quadrado#
 
 #Janela de pedir arquivo/caminho#
     def pedir_caminho_salvar(self):

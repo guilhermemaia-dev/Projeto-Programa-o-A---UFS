@@ -57,6 +57,12 @@ class ControllerPaint:
     def limpar_tela(self):
         self.model.figuras = []
         self.view.desenhar_figuras(self.model.figuras)
+
+    #criação do metodo crtl_z para remover a ultima figura
+    def ctrl_z(self,event):
+        if self.model.figuras:
+            self.model.figuras.pop()
+            self.view.desenhar_figuras(self.model.figuras)
     
 
     #Funções de salvar e abrir arquivos#
