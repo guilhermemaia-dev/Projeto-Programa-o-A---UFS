@@ -7,7 +7,7 @@ class Quadrado(Figuras):
         self.cor_borda = cor_borda
         self.cor_preenchimento = cor_preenchimento
         self.x_quadrado = self.ini_x + (self.tamanho if (self.posx - self.ini_x) >= 0 else -self.tamanho)
-        self.y_quadrado = self.ini_x + (self.tamanho if (self.posy - self.ini_y) >= 0 else -self.tamanho)
+        self.y_quadrado = self.ini_y + (self.tamanho if (self.posy - self.ini_y) >= 0 else -self.tamanho)
 
     def pegar_dados(self):
         return (self.ini_x, self.ini_y, self.cor_borda, self.cor_preenchimento, self.tamanho, self.x_quadrado, self.y_quadrado)

@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import colorchooser
 import os
 from tkinter import filedialog
+
 from model.mao_livre import Mao_Livre
 from model.reta import Reta
 from model.retangulo import Retangulo
@@ -19,7 +20,7 @@ class JanelaPaint:
 
     def configuracao_janela(self):
         self.janela.title("PAINT 2.1")
-        self.janela.geometry("1600x900")
+        self.janela.geometry("1700x900")
 
 
     def criar_elementos(self):
@@ -96,7 +97,8 @@ class JanelaPaint:
         label_indicar_ferramenta_atual.pack(side=LEFT, padx=10)
         self.mostrar_ferramenta_atual = Label(self.janela, text=self.controller.model.ferramenta_atual)
         self.mostrar_ferramenta_atual.pack(side=LEFT,padx=10)
-       # #Botões de arquivos, PARA CONCERTAR, ele não aparece no menu, mas o comando está correto!!!!!!!!!!!!!!!!!!!!# #
+
+        # botoes de salvar e abrir arquivos
         bot_salvar = Button(self.janela, text="SALVAR", command=self.controller.salvar_desenho)
         bot_abrir = Button(self.janela, text="ABRIR", command=self.controller.abrir_desenho)
         bot_salvar.pack(side=TOP)
@@ -140,7 +142,8 @@ class JanelaPaint:
                 self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor)
 
             elif isinstance(figura, Borracha):
-                self.canvas.create_line( figura.ini_x, figura.ini_y, figura.posx, figura.posy, fill=figura.cor, width=figura.tamanho)
+                ini_x, ini_y, posx, posy, cor, tamanho = figura.pegar_dados()
+                self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor, width=tamanho)
                 
             elif isinstance(figura, Retangulo):
                 ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()

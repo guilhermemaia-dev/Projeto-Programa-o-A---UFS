@@ -21,12 +21,10 @@ class S_Circulo(Ferramenta):
         self.view.desenhar_figuras([preview], apagarAtela=False)
 
     def fim_mouse(self, event):
-        #verifica se a figura é valida ou não (cada figura sabe se ela mesmo é valida ou se não é)
-        # se não for válida, ela não se desenha, caso contrário, leva até o model e adiciona na lista das figuras e desenha
         self.x2 = event.x
         self.y2 = event.y
 
-        figura = self.criar_figura(event.x, event.y)
+        figura = self.criar_figura(self.x2, self.y2)
         
         if not figura.validar():
             self.view.desenhar_figuras(self.model.figuras)

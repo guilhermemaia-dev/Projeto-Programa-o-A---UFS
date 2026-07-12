@@ -22,7 +22,7 @@ class S_Reta(Ferramenta):
         self.x2 = event.x
         self.y2 = event.y
 
-        figura = self.criar_figura(event.x, event.y)
+        figura = self.criar_figura(self.x2, self.y2)
         
         if not figura.validar():
             self.view.desenhar_figuras(self.model.figuras)

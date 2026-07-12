@@ -7,7 +7,7 @@ class Borracha(Figuras):
         self.tamanho = 20
 
     def pegar_dados(self):
-        return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor)
+        return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor, self.tamanho)
 
     def validar(self):
         return (self.posx - self.ini_x)**2 > 0 or (self.posy - self.ini_y)**2 > 0
