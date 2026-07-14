@@ -3,7 +3,7 @@ from model.figuras import Figuras
 class Reta(Figuras):
     def __init__(self, ini_x, ini_y, posx, posy, cor):
         super().__init__(ini_x, ini_y, posx, posy)
-        self.cor = cor if cor else "black"
+        self.cor = cor
 
     def pegar_dados(self):
         return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor)

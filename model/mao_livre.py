@@ -3,10 +3,16 @@ from model.figuras import Figuras
 class Mao_Livre(Figuras):
     def __init__(self, ini_x, ini_y, posx, posy, cor):
         super().__init__(ini_x, ini_y, posx, posy)
-        self.cor = cor if cor else "black"
+        self.cor = cor
+        self.pontos = [(ini_x, ini_y), (posx, posy)]
+
+    def adicionar_ponto(self, x, y):
+        self.pontos.append((x,y))
+        self.posx = x
+        self.posy = y
 
     def pegar_dados(self):
-        return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor)
+        return (self.pontos, self.cor)
 
     def validar(self):
-        return abs(self.posx - self.ini_x) > 0 or abs(self.posy - self.ini_y) > 0
+        return len(self.pontos) > 2

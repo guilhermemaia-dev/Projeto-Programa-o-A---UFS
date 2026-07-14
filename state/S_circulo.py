@@ -2,33 +2,27 @@ from state.S_ferramentas import Ferramenta
 from model.circulo import Circulo
 
 class S_Circulo(Ferramenta):
-    def criar_figura(self, x, y):
-        return Circulo(self.ini_x, self.ini_y, x, y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
-    
+    preview : Circulo = None
+
     def mouse_ini(self, event):
         self.ini_x = event.x 
         self.ini_y = event.y
 
+        self.preview = Circulo(self.ini_x, self.ini_y, event.x, event.y , self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
+
     def mouse_movimentacao(self, event):
-        self.x1 = event.x
-        self.y1 = event.y
+        self.preview.posx = event.x
+        self.preview.posy = event.y
 
-        preview = self.criar_figura(self.x1, self.y1)
-
-        #desenha todas as figuras ja feitas
+        # a cada evento de mouse movimentado, vai desenhando tudo que ja está salvo
         self.view.desenhar_figuras(self.model.figuras)
-        #recebe o preview para ser desenhado
-        self.view.desenhar_figuras([preview], apagarAtela=False)
 
+        self.view.desenhar_circulo(self.preview, dash=(4,2))
+
+    # se a figura for válida, adiciona na lista, limpa o preview e redesenha a tela toda com a nova figura salva
     def fim_mouse(self, event):
-        self.x2 = event.x
-        self.y2 = event.y
+        if self.preview.validar():
+            self.model.figuras.append(self.preview)
 
-        figura = self.criar_figura(self.x2, self.y2)
-        
-        if not figura.validar():
-            self.view.desenhar_figuras(self.model.figuras)
-            return
-
-        self.model.figuras.append(figura)
+        self.preview = None
         self.view.desenhar_figuras(self.model.figuras)

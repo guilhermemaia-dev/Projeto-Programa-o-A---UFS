@@ -5,9 +5,15 @@ class Borracha(Figuras):
         super().__init__(ini_x, ini_y, posx, posy)
         self.cor = "white"
         self.tamanho = 20
+        self.pontos = [(ini_x, ini_y), (posx, posy)]
+
+    def adicionar_ponto(self, x, y):
+        self.pontos.append((x,y))
+        self.posx = x
+        self.posy = y
 
     def pegar_dados(self):
-        return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor, self.tamanho)
+        return (self.pontos, self.cor, self.tamanho)
 
     def validar(self):
-        return (self.posx - self.ini_x)**2 > 0 or (self.posy - self.ini_y)**2 > 0
+        return len(self.pontos) > 2
