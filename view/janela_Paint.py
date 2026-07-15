@@ -17,6 +17,17 @@ class JanelaPaint:
         self.configuracao_janela()
         #obs: o controlador ainda n foi criado (apenas é criado na proxima linha do main)
         self.controller = None
+        
+        #cria um dicionario com as figuras existentes no programa e relacionando as figuras com os metodos
+        self.dicionario_figuras = {
+            Mao_Livre : self.desenhar_mao_livre,
+            Reta : self.desenhar_reta,
+            Borracha : self.desenhar_borracha,
+            Retangulo : self.desenhar_retangulo,
+            Oval : self.desenhar_oval,
+            Circulo: self.desenhar_circulo,
+            Quadrado :self.desenhar_quadrado
+         }
 
     def configuracao_janela(self):
         self.janela.title("PAINT 2.1")
@@ -76,7 +87,7 @@ class JanelaPaint:
         bot_circulo = Button(frame_linha2, text="CIRCULAR", command=lambda: self.controller.selecionar_ferramenta("Circulo"))
         bot_quadrado = Button(frame_linha2,text="QUADRADO",command=lambda:self.controller.selecionar_ferramenta("Quadrado"))
         bot_borracha = Button(frame_linha2, text="BORRACHA", command=lambda: self.controller.selecionar_ferramenta("Borracha"))
-        
+        bot_selecao = Button(frame_linha2, text="SELEÇÃO",command=lambda: self.controller.selecionar_ferramenta("Seleção"))
 
         #Coloca os botões na janela
         bot_livre.pack(side=LEFT, padx=1)
@@ -86,6 +97,7 @@ class JanelaPaint:
         bot_circulo.pack(side=LEFT, padx=1)
         bot_quadrado.pack(side=LEFT, padx=1)
         bot_borracha.pack(side=LEFT, padx=1)
+        bot_selecao.pack(side=LEFT,padx=1)
         
 
         #cria o botão para apagar tudo
@@ -124,7 +136,6 @@ class JanelaPaint:
        
         
 
-
     #metodo para o próprio view atualizar as cores do preview na tela
     def alterar_cor_preview(self, cor_borda, cor_preenchimento):
         self.label_cor_selecionadaBorda.configure(bg=cor_borda)
@@ -144,55 +155,52 @@ class JanelaPaint:
         if cor:
             self.controller.receberAcor(cor, self.estado_marcador.get())
 
+
+
+
     #Criação de metodos para desenhar as figuras
-    def desenhar_mao_livre_ou_reta(self, figura):
+    def desenhar_reta(self, figura, dash=None):
         ini_x, ini_y, posx, posy, cor = figura.pegar_dados()
-        self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor)
+        self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor, dash=dash)
     
-    def desenhar_borracha(self,figura):
-        ini_x, ini_y, posx, posy, cor, tamanho = figura.pegar_dados()
-        self.canvas.create_line(ini_x, ini_y, posx, posy, fill=cor, width=tamanho)
+    def desenhar_mao_livre(self, figura, dash=None):
+        pontos, cor = figura.pegar_dados()
+        self.canvas.create_line(pontos, fill=cor, dash=dash)
+        
+    def desenhar_borracha(self,figura, dash=None):
+        pontos, cor, tamanho = figura.pegar_dados()
+        self.canvas.create_line(pontos, fill=cor, width=tamanho, dash=dash)
     
-    def desenhar_retangulo(self,figura):
+    def desenhar_retangulo(self,figura, dash=None):
         ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-        self.canvas.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
+        self.canvas.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
 
-    def desenhar_oval(self,figura):
+    def desenhar_oval(self,figura, dash=None):
         ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-        self.canvas.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench)
+        self.canvas.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
 
-    def desenhar_circulo(self,figura):
-        x0, y0, x1, y1, cor_borda, cor_preench = figura.pegar_dados()
-        self.canvas.create_oval(x0, y0, x1, y1, outline=cor_borda, fill=cor_preench)
+    def desenhar_circulo(self,figura, dash=None):
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
+        self.canvas.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
 
-    def desenhar_quadrado(self,figura):
-        x0, y0, cor_borda, cor_preench, tamanho, x_quadrado, y_quadrado = figura.pegar_dados()
-        self.canvas.create_rectangle(x0, y0, x_quadrado, y_quadrado, outline=cor_borda, fill=cor_preench)
+    def desenhar_quadrado(self,figura, dash=None):
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
+        self.canvas.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
+    
+    def desenhar_selecao(self, figura, dash=None):
+        x_min, y_min, x_max, y_max = figura.limites()
+        self.canvas.create_rectangle((x_min-10),(y_min-10), (x_max+10), (y_max+10), outline="black",dash=(4,2))
 
 
     # metodo simplificado que desenha tudo direto
-    def desenhar_figuras(self, lista_figuras, apagarAtela=True):
-        
-        # se puder apagar a tela, apaga
-        if apagarAtela:
-            self.canvas.delete("all")
-
-        #cria um dicionario com as figuras existentes no programa e relacionando as figuras com os metodos
-        dicionario_figuras = {
-            Mao_Livre : self.desenhar_mao_livre_ou_reta,
-            Reta : self.desenhar_mao_livre_ou_reta,
-            Borracha : self.desenhar_borracha,
-            Retangulo : self.desenhar_retangulo,
-            Oval : self.desenhar_oval,
-            Circulo : self.desenhar_circulo,
-            Quadrado :self.desenhar_quadrado
-        }
+    def desenhar_figuras(self, lista_figuras):
+        self.canvas.delete("all")
 
         #cria um loop que primeiro analisa qual o tipo de figura, olha se essa figura esta no dicionario e se estiver executa o metodo associado no dicionario
         for figura in lista_figuras:
             tipo_figura = type(figura)
-            if tipo_figura in dicionario_figuras:
-                metodo_figura = dicionario_figuras[tipo_figura]
+            if tipo_figura in self.dicionario_figuras:
+                metodo_figura = self.dicionario_figuras[tipo_figura]
                 metodo_figura(figura)
 
 

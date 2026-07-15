@@ -2,26 +2,24 @@ from state.S_ferramentas import Ferramenta
 from model.borracha import Borracha
 
 class S_Borracha(Ferramenta):
-    def criar_figura(self, x, y):
-        return Borracha(self.ini_x, self.ini_y, x, y)
+    preview : Borracha = None
 
     def mouse_ini(self, event):
-        self.ini_x = event.x 
+        self.ini_x = event.x
         self.ini_y = event.y
 
+        self.preview = Borracha(self.ini_x, self.ini_y, event.x, event.y)
+
     def mouse_movimentacao(self, event):
-        self.x1 = event.x
-        self.y1 = event.y
-
-        preview = self.criar_figura(self.x1, self.y1)
-
-        if preview.validar():
-            self.model.figuras.append(preview)
-
-            self.ini_x = event.x
-            self.ini_y = event.y
+        self.preview.adicionar_ponto(event.x, event.y)
 
         self.view.desenhar_figuras(self.model.figuras)
 
+        self.view.desenhar_borracha(self.preview)
+
     def fim_mouse(self, event):
+        if self.preview.validar():
+            self.model.figuras.append(self.preview)
+
+        self.preview = None
         self.view.desenhar_figuras(self.model.figuras)

@@ -6,4 +6,5 @@ class ModelInterface:
         self.ferramenta_atual = "Mao_Livre"
         self.state_atual = None
         self.figuras = []
+        self.figura_selecionada = None
         

@@ -11,3 +11,23 @@ class Oval(Figuras):
     
     def validar(self):
         return abs(self.posx - self.ini_x) >= 2 and abs(self.posy - self.ini_y) >= 2
+    
+    def contem(self, x, y):
+        centrox = (self.ini_x + self.posx)/2
+        centroy = (self.ini_y + self.posy)/2
+        horizontal = abs(self.posx-self.ini_x)/2
+        vertical = abs(self.posy-self.ini_y)/2
+        return ((x - centrox)**2 / horizontal**2) + ((y - centroy)**2 / vertical**2) <= 1
+    
+    def mover(self, dx, dy):
+        self.ini_x += dx
+        self.ini_y += dy
+        self.posx += dx
+        self.posy += dy
+
+    def limites(self):
+        x_min = min(self.ini_x, self.posx)
+        y_min = min(self.ini_y, self.posy)
+        x_max = max(self.ini_x, self.posx)
+        y_max = max(self.ini_y, self.posy)
+        return (x_min, y_min, x_max, y_max)

@@ -17,3 +17,16 @@ class Figuras(ABC):
     def pegar_dados(self):
         pass
 
+    # serve para selecionar a figura
+    @abstractmethod
+    def contem(self, x, y):
+        pass
+
+    #serve para mover a figura
+    @abstractmethod
+    def mover(self, dx, dy):
+        pass
+
+    #serve para cotornar a figura
+    def limites(self):
+        pass
