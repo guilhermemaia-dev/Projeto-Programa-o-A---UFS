@@ -26,5 +26,3 @@ class S_Retangulo(Ferramenta):
 
         self.preview = None
         self.view.desenhar_figuras(self.model.figuras)
-
-    
