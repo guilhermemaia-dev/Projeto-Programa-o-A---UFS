@@ -12,7 +12,7 @@ class ModelInterface:
         self.buffer = None
 
 
-    def limpa_selecao(self) :
+    def limpa_selecao(self) :#|
         self.indice_selecionado = -1
 
     def seleciona(self, px, py) :
@@ -41,7 +41,6 @@ class ModelInterface:
     #criação dos métodos de camadas e manipulação da lista#
     #o programa desenha as figuras e suas camadas baseado na sua posição na lista de figuras#
     
-    #!FALTO CORRIGIR QUE ELA SÓ APLICA DEPOIS DE DESENHAR OUTRA IMAGEM!#
     def trazer_frente(self):
         figSel = self.selecionada()
         if figSel:
