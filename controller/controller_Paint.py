@@ -101,7 +101,22 @@ class ControllerPaint:
             self.view.desenhar_figuras(self.model.figuras)
     #Métodos de camadas, precisa do event=None para não dar erro# 
     def camada_frontal(self, event=None):
-            self.model.trazer_frente()
-            
+        self.model.trazer_frente()
+        
     def camada_traseira(self, event=None):
-            self.model.trazer_tras()
+        self.model.trazer_tras()
+    
+    #Método de remover#
+    def remover(self, event=None):
+        self.model.deletar_lista()
+        
+    #Movimentos laterais#
+    def mover_esquerda(self, event=None):
+        figSel = self.model.selecionada()
+        if figSel:
+            figSel.mover(-15, 0)
+
+    def mover_direita(self, event=None):
+        figSel = self.model.selecionada()
+        if figSel:
+            figSel.mover(+15, 0)

@@ -40,18 +40,26 @@ class ModelInterface:
             self.buffer = copy.deepcopy(f)
     #criação dos métodos de camadas e manipulação da lista#
     #o programa desenha as figuras e suas camadas baseado na sua posição na lista de figuras#
+    
+    #!FALTO CORRIGIR QUE ELA SÓ APLICA DEPOIS DE DESENHAR OUTRA IMAGEM!#
     def trazer_frente(self):
         figSel = self.selecionada()
         if figSel:
             #Colocando a figura como último termo#
             self.figuras.remove(figSel)
             self.figuras.append(figSel)
-            #Atualizando o índice para a última posição#
+            #Atualizando o índice para a última posição e mantém selecionada a figura#
             self.indice_selecionado = len(self.figuras) - 1
     def trazer_tras(self):
         figSel = self.selecionada()
         if figSel:
             self.figuras.remove(figSel)
-            #Coloca a figura no último termo e atualiza o índice#
+            #Coloca a figura no último termo e atualiza o índice e mantém selecionada a figura#
             self.figuras.insert(0, figSel)
             self.indice_selecionado = 0
+
+    #Métodos de deletar e mover com atalhos do teclado#
+    def deletar_lista(self):
+        figSel = self.selecionada()
+        if figSel:
+            self.figuras.remove(figSel)

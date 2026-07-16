@@ -68,9 +68,11 @@ class JanelaPaint:
         #atribuição das teclas das setas para manipulação das figuras#
         self.janela.bind("<Up>", self.controller.camada_frontal)
         self.janela.bind("<Down>", self.controller.camada_traseira)
-        #terminar após a pausa#
-        self.janela.bind("<Left>", self.controller.camada_traseira)
-        self.janela.bind("<Right>", self.controller.camada_traseira)
+
+        self.janela.bind("<Left>", self.controller.mover_esquerda)
+        self.janela.bind("<Right>", self.controller.mover_direita)
+        
+        self.janela.bind("<Delete>", self.controller.remover)
         # pede ao controlador para obter a lista de cores, ele pede para o model, o model devolve a ele, e ele devolve para o view
         cores = self.controller.obter_cor()
         
