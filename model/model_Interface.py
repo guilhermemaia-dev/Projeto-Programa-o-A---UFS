@@ -38,8 +38,10 @@ class ModelInterface:
             f.mover(5, 5)
             self.figuras.append(f)
             self.buffer = copy.deepcopy(f)
+
+
     #criação dos métodos de camadas e manipulação da lista#
-    #o programa desenha as figuras e suas camadas baseado na sua posição na lista de figuras#
+    #o programa desenha as figuras e suas camadas baseado na sua posição na lista de figuras, quem está por último, está no final da fila#
     
     def trazer_frente(self):
         figSel = self.selecionada()
@@ -56,8 +58,23 @@ class ModelInterface:
             #Coloca a figura no último termo e atualiza o índice e mantém selecionada a figura#
             self.figuras.insert(0, figSel)
             self.indice_selecionado = 0
-
-    #Métodos de deletar e mover com atalhos do teclado#
+    #Mover somente uma camada#
+    def uma_frente(self):
+        #verifica se ela já é a última da lista#
+        if self.indice_selecionado < len(self.figuras) - 1:
+            atual = self.indice_selecionado
+            #Efetua a troca das posições#
+            self.figuras[atual], self.figuras[atual + 1] = self.figuras[atual + 1], self.figuras[atual]
+            self.indice_selecionado += 1
+    def uma_atras(self):
+        #verifica se já é a primeira da lista#
+        if self.indice_selecionado > 0:
+            atual = self.indice_selecionado
+            #Efetua a troca das posições#
+            self.figuras[atual], self.figuras[atual - 1] = self.figuras[atual - 1], self.figuras[atual]
+            self.indice_selecionado -= 1
+            
+    #Método de deletar#
     def deletar_lista(self):
         figSel = self.selecionada()
         if figSel:

@@ -99,6 +99,7 @@ class ControllerPaint:
             
             #Pede para a View desenhar a nova lista de figuras#
             self.view.desenhar_figuras(self.model.figuras)
+    
     #Métodos de camadas, precisa do event=None para não dar erro# 
     def camada_frontal(self, event=None):
         self.model.trazer_frente()
@@ -107,18 +108,17 @@ class ControllerPaint:
     def camada_traseira(self, event=None):
         self.model.trazer_tras()
         self.view.desenhar_figuras(self.model.figuras)
+    
     #Método de remover#
     def remover(self, event=None):
         self.model.deletar_lista()
         self.view.desenhar_figuras(self.model.figuras)
-    #Movimentos laterais#
-    def mover_esquerda(self, event=None):
-        figSel = self.model.selecionada()
-        if figSel:
-            figSel.mover(-5, 0)
+    
+    #Movimentos de 1 camada#
+    def mover_uma_frente(self, event=None):
+        self.model.uma_frente()
         self.view.desenhar_figuras(self.model.figuras)
-    def mover_direita(self, event=None):
-        figSel = self.model.selecionada()
-        if figSel:
-            figSel.mover(+5, 0)
+
+    def mover_uma_atras(self, event=None):
+        self.model.uma_atras()
         self.view.desenhar_figuras(self.model.figuras)
