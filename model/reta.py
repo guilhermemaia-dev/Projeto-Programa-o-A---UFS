@@ -1,4 +1,5 @@
 from model.figuras import Figuras
+from funcoes_extras.distancia import distancia
 
 class Reta(Figuras):
     def __init__(self, ini_x, ini_y, posx, posy, cor):
@@ -11,18 +12,14 @@ class Reta(Figuras):
     def validar(self):
         return abs(self.posx - self.ini_x) > 0 or abs(self.posy - self.ini_y) > 0
     
-    def contem(self, x, y):
-        return min(self.ini_x,self.posx) <= x <= max(self.posx,self.ini_x) and min(self.ini_y,self.posy) <= y <= max(self.posy,self.ini_y)
+    # (px, py) está perto (<=epsilon) de self
+    def contem(self, px, py) :
+        epsilon = 3
+        return distancia(self.ini_x, self.ini_y, self.posx, self.posy, px, py) <= epsilon
     
+    #deslocamento (somando a variação)
     def mover(self, dx, dy):
         self.ini_x += dx
         self.ini_y += dy
         self.posx += dx
         self.posy += dy
-
-    def limites(self):
-        x_min = min(self.ini_x, self.posx)
-        y_min = min(self.ini_y, self.posy)
-        x_max = max(self.ini_x, self.posx)
-        y_max = max(self.ini_y, self.posy)
-        return (x_min, y_min, x_max, y_max)

@@ -21,8 +21,9 @@ class Quadrado(Figuras):
     def validar(self):
         return abs(self.ini_x - self.posx) >= 2 and abs(self.ini_y - self.posy) >= 2
     
+    # verificar se o clique ocorreu dentro do quadrado, encontrando a largura e altura, ou seja, retornará True se tiver dentro dos limites do quadrado
     def contem(self, x, y):
-        return min(self.ini_x,self.posx) <= x <= max(self.posx,self.ini_x) and min(self.ini_y,self.posy) <= y <= max(self.posy,self.ini_y)
+        return min(self.ini_x, self.x_quadrado) <= x <= max(self.x_quadrado,self.ini_x) and min(self.ini_y,self.y_quadrado) <= y <= max(self.y_quadrado,self.ini_y)
 
     def mover(self, dx, dy):
         self.ini_x += dx
@@ -31,10 +32,3 @@ class Quadrado(Figuras):
         self.posy += dy
         self.x_quadrado += dx
         self.y_quadrado += dy
-
-    def limites(self):
-        x_quadradomin = min(self.ini_x, self.x_quadrado)
-        y_quadradomin = min(self.ini_y, self.y_quadrado)
-        x_quadradomax = max(self.ini_x, self.x_quadrado)
-        y_quadradomax = max(self.ini_y, self.y_quadrado)
-        return (x_quadradomin, y_quadradomin, x_quadradomax, y_quadradomax)

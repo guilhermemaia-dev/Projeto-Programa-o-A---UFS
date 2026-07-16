@@ -54,16 +54,30 @@ class ControllerPaint:
     def fim_mouse(self, event):
         self.model.state_atual.fim_mouse(event)
 
+
+
     #criação do botão para limpar a tela esvaziando a lista de figuras
     def limpar_tela(self):
         self.model.figuras = []
         self.view.desenhar_figuras(self.model.figuras)
+
+
+    # copiar e colar (recebe o evento do view e manda o model fazer)
+    def control_c(self, event):
+        self.model.copiar_selecionada()
+
+    def control_v(self, event):
+        self.model.colar()
+        self.view.desenhar_figuras(self.model.figuras)# redesenha com a parte do buffer
+    
 
     #criação do metodo crtl_z para remover a ultima figura
     def ctrl_z(self,event):
         if self.model.figuras:
             self.model.figuras.pop()
             self.view.desenhar_figuras(self.model.figuras)
+    
+    #Ctrl Y:
     
 
     #Funções de salvar e abrir arquivos#

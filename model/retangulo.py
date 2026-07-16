@@ -12,18 +12,15 @@ class Retangulo(Figuras):
     def validar(self):
         return abs(self.posx - self.ini_x) >= 2 and abs(self.posy - self.ini_y) >= 2
     
+    # verificar se o clique ocorreu dentro do retangulo, encontrando a largura e altura, ou seja, retornará True se tiver dentro dos limites do retângulo
     def contem(self, x, y):
-        return min(self.ini_x,self.posx) <= x <= max(self.posx,self.ini_x) and min(self.ini_y,self.posy) <= y <= max(self.posy,self.ini_y)
+        x_min, x_max = min(self.ini_x, self.posx), max(self.ini_x, self.posx)
+        y_min, y_max = min(self.ini_y, self.posy), max(self.ini_y, self.posy)
+        return x_min <= x <= x_max and y_min <= y <= y_max
 
+    # deslocamento (somando a variação)
     def mover(self, dx, dy):
         self.ini_x += dx
         self.ini_y += dy
         self.posx += dx
         self.posy += dy
-
-    def limites(self):
-        x_min = min(self.ini_x, self.posx)
-        y_min = min(self.ini_y, self.posy)
-        x_max = max(self.ini_x, self.posx)
-        y_max = max(self.ini_y, self.posy)
-        return (x_min, y_min, x_max, y_max)

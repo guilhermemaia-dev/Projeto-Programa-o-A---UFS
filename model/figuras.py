@@ -17,7 +17,7 @@ class Figuras(ABC):
     def pegar_dados(self):
         pass
 
-    # serve para selecionar a figura
+    # serve para verificar se a figura contem os pontos, ou seja, se o ponto(x,y) está dentro do desenho
     @abstractmethod
     def contem(self, x, y):
         pass
@@ -25,8 +25,4 @@ class Figuras(ABC):
     #serve para mover a figura
     @abstractmethod
     def mover(self, dx, dy):
-        pass
-
-    #serve para cotornar a figura
-    def limites(self):
         pass

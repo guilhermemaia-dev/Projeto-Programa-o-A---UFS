@@ -24,11 +24,3 @@ class Circulo(Figuras):
         self.ini_y += dy
         self.posx += dx
         self.posy += dy
-
-    def limites(self):
-        raio = ((self.ini_x - self.posx) ** 2 + (self.ini_y - self.posy) ** 2) ** 0.5
-        x_min = self.ini_x - raio
-        y_min = self.ini_y - raio
-        x_max = self.ini_x + raio
-        y_max = self.ini_y + raio
-        return (x_min, y_min, x_max, y_max)

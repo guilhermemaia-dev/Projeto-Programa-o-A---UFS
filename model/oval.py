@@ -24,10 +24,3 @@ class Oval(Figuras):
         self.ini_y += dy
         self.posx += dx
         self.posy += dy
-
-    def limites(self):
-        x_min = min(self.ini_x, self.posx)
-        y_min = min(self.ini_y, self.posy)
-        x_max = max(self.ini_x, self.posx)
-        y_max = max(self.ini_y, self.posy)
-        return (x_min, y_min, x_max, y_max)

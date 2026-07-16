@@ -1,35 +1,32 @@
 from state.S_ferramentas import Ferramenta
 
-
 class S_Selecao(Ferramenta):
+    ultimo_x : int = 0
+    ultimo_y : int = 0
+
+    # no momento do clique do mouse ele guarda as posições, limpa a seleção (por exemplo se já tiver algo selecionado e clicar em algo vazio ele limpará a seleção), seleciona a figura e desenha todas as figuras com a figura selecionada
     def mouse_ini(self, event):
-        x = event.x
-        y = event.y
-        self.ultimo_x = x
-        self.ultimo_y = y
+        self.ultimo_x = event.x
+        self.ultimo_y = event.y
+        self.model.limpa_selecao()
+        self.model.seleciona(event.x, event.y)
 
-        self.model.figura_selecionada = None
+        figSel = self.model.selecionada()
+        self.view.desenhar_figuras(self.model.figuras, figSel)
 
-        for figura in self.model.figuras:
-            if figura.contem(x , y):
-                self.model.figura_selecionada = figura
-                break
-        
-        if self.model.figura_selecionada is not None:
-            self.view.desenhar_selecao(self.model.figura_selecionada)
-    
+    # se houver uma figura selecionada calcula a diferença da posicao do mouse atual com o ultimo e move a diferença.
     def mouse_movimentacao(self, event):
-        if self.model.figura_selecionada is not None:
-            dx = event.x - self.ultimo_x
-            dy = event.y - self.ultimo_y
+        figSel = self.model.selecionada()
+        if figSel:
+            figSel.mover(event.x - self.ultimo_x, event.y - self.ultimo_y)
+            #atualiza a posição atual do mouse, garantindo que a movimentação ocorra no ponto atual
             self.ultimo_x = event.x
             self.ultimo_y = event.y
 
-            self.model.figura_selecionada.mover(dx,dy)
+            self.view.desenhar_figuras(self.model.figuras, figSel)
 
-            self.view.desenhar_figuras(self.model.figuras)
-
-            self.view.desenhar_selecao(self.model.figura_selecionada)
-
+    # quando solta o mouse redesenha a tela
     def fim_mouse(self, event):
-        pass
+        figSel = self.model.selecionada()
+        #garante que o dash continue, já que está com o argumento de figSel
+        self.view.desenhar_figuras(self.model.figuras, figSel)
