@@ -11,6 +11,7 @@ from model.circulo import Circulo
 from model.borracha import Borracha
 from model.quadrado import Quadrado
 
+
 class JanelaPaint:
     def __init__(self):
         self.janela = Tk()
@@ -64,6 +65,12 @@ class JanelaPaint:
         #cria uma bind para crtl+z apagar a ultima figura desenhada
         self.janela.bind("<Control-z>", self.controller.ctrl_z)   
 
+        #atribuição das teclas das setas para manipulação das figuras#
+        self.janela.bind("<Up>", self.controller.camada_frontal)
+        self.janela.bind("<Down>", self.controller.camada_traseira)
+        #terminar após a pausa#
+        self.janela.bind("<Left>", self.controller.camada_traseira)
+        self.janela.bind("<Right>", self.controller.camada_traseira)
         # pede ao controlador para obter a lista de cores, ele pede para o model, o model devolve a ele, e ele devolve para o view
         cores = self.controller.obter_cor()
         
@@ -218,3 +225,6 @@ class JanelaPaint:
         return filedialog.askopenfilename(
             title="Abrir Arquivo",
             filetypes=[("Arquivos Paint", "*.paint"), ("Todos os Arquivos", "*.*")])
+#Método de colocar a figura acima das outras#
+    def camada_acima(figuras):
+        figuras.remove(figSel)

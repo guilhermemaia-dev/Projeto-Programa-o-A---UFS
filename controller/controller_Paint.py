@@ -99,3 +99,9 @@ class ControllerPaint:
             
             #Pede para a View desenhar a nova lista de figuras#
             self.view.desenhar_figuras(self.model.figuras)
+    #Métodos de camadas, precisa do event=None para não dar erro# 
+    def camada_frontal(self, event=None):
+            self.model.trazer_frente()
+            
+    def camada_traseira(self, event=None):
+            self.model.trazer_tras()
