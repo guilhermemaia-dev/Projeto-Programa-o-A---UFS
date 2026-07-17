@@ -26,3 +26,7 @@ class Figuras(ABC):
     @abstractmethod
     def mover(self, dx, dy):
         pass
+
+    #serve para mudar cor da figura
+    def trocarcor(self,cor_borda,cor_preenchimento):
+        pass        

@@ -62,8 +62,9 @@ class JanelaPaint:
         self.janela.bind("<Control-c>", self.controller.control_c)
         self.janela.bind("<Control-v>", self.controller.control_v)
 
-        #cria uma bind para crtl+z apagar a ultima figura desenhada
-        self.janela.bind("<Control-z>", self.controller.ctrl_z)   
+        #cria uma bind para ctrl z apagar a ultima figura desenhada e uma bind para ctrl y refazer a figura
+        self.janela.bind("<Control-z>", self.controller.ctrl_z)
+        self.janela.bind("<Control-y>", self.controller.ctrl_y)   
 
         #atribuição das teclas das setas para manipulação das figuras#
         self.janela.bind("<Up>", self.controller.camada_frontal)

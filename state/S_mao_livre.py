@@ -26,7 +26,7 @@ class S_Mao_Livre(Ferramenta):
     def fim_mouse(self, event):
         if self.preview is not None:
             if self.preview.validar():
-                self.model.figuras.append(self.preview)
+                self.model.adcionar_figura(self.preview)
 
             self.preview = None
 

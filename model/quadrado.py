@@ -32,3 +32,7 @@ class Quadrado(Figuras):
         self.posy += dy
         self.x_quadrado += dx
         self.y_quadrado += dy
+
+    def trocarcor(self,cor_borda,cor_preenchimento):
+        self.cor_borda = cor_borda
+        self.cor_preenchimento = cor_preenchimento

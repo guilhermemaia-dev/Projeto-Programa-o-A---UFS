@@ -8,6 +8,7 @@ class ModelInterface:
         self.ferramenta_atual = "Mao_Livre"
         self.state_atual = None
         self.figuras = []
+        self.figuras_desfeitas = []
         self.indice_selecionado = -1
         self.buffer = None
 
@@ -38,6 +39,23 @@ class ModelInterface:
             f.mover(5, 5)
             self.figuras.append(f)
             self.buffer = copy.deepcopy(f)
+
+    #metodo para o ctrl z e ctrl y funcionarem sem bug entre figuras
+    def adcionar_figura(self, figura):
+        self.figuras.append(figura)
+        self.figuras_desfeitas = []
+
+    #metodo para o ctrl z funcionar removendo a figura
+    def desfazer(self):
+        if self.figuras:
+            figura = self.figuras.pop()
+            self.figuras_desfeitas.append(figura)
+
+    #metodo para o ctrl y funcionar readcionando a figura
+    def refazer(self):
+        if self.figuras_desfeitas:
+            figura = self.figuras_desfeitas.pop()
+            self.figuras.append(figura)
 
 
     #criação dos métodos de camadas e manipulação da lista#
@@ -79,3 +97,5 @@ class ModelInterface:
         figSel = self.selecionada()
         if figSel:
             self.figuras.remove(figSel)
+
+    

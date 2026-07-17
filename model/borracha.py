@@ -23,3 +23,6 @@ class Borracha(Figuras):
     
     def mover(self, dx, dy):
         pass
+
+    def trocarcor(self, cor_borda, cor_preenchimento):
+        pass

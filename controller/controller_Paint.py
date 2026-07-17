@@ -36,6 +36,11 @@ class ControllerPaint:
                 self.model.cor_selecionada_borda = "#000000"
 
         self.view.alterar_cor_preview(self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
+        
+        figura = self.model.selecionada()
+        if figura is not None:
+            figura.trocarcor(self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
+            self.view.desenhar_figuras(self.model.figuras, figura)
 
 
     # receber a ferramenta de forma mais simplificada quando clica no botão, cria logo a figura e manda para a view atualizar a tela de preview
@@ -71,14 +76,15 @@ class ControllerPaint:
         self.view.desenhar_figuras(self.model.figuras)# redesenha com a parte do buffer
     
 
-    #criação do metodo crtl_z para remover a ultima figura
-    def ctrl_z(self,event):
-        if self.model.figuras:
-            self.model.figuras.pop()
-            self.view.desenhar_figuras(self.model.figuras)
+    #criação do metodo ctrl z para remover a ultima figura
+    def ctrl_z(self,event):    
+        self.model.desfazer()
+        self.view.desenhar_figuras(self.model.figuras)
     
-    #Ctrl Y:
-    
+    #Criação do metodo ctrl y para readcionar a figura removida
+    def ctrl_y(self,event):
+        self.model.refazer()
+        self.view.desenhar_figuras(self.model.figuras)
 
     #Funções de salvar e abrir arquivos#
     def salvar_desenho(self):

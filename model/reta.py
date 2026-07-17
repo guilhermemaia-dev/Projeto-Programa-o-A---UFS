@@ -23,3 +23,7 @@ class Reta(Figuras):
         self.ini_y += dy
         self.posx += dx
         self.posy += dy
+
+    def trocarcor(self,cor_borda,cor_preenchimento):
+        self.cor = cor_borda
+        

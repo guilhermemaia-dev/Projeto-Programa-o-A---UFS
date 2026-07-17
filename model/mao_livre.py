@@ -23,3 +23,6 @@ class Mao_Livre(PoliPontos):
         return any(distancia(ini_x, ini_y, posx, posy, px, py) <= epsilon
                     for (ini_x, ini_y), (posx, posy) in zip(self.pontos, self.pontos[1:])
                   )
+    
+    def trocarcor(self,cor_borda,cor_preenchimento):
+        self.cor = cor_borda
