@@ -6,6 +6,7 @@ from controller.state.S_circulo import S_Circulo
 from controller.state.S_borracha import S_Borracha
 from controller.state.S_quadrado import S_Quadrado
 from controller.state.S_selecao import S_Selecao
+from controller.state.S_selecaogeral import S_selecaogeral
 from model.arquivo import Arquivo
 
 class ControllerPaint:
@@ -14,7 +15,7 @@ class ControllerPaint:
         self.view = view
         self.view.controller = self
 
-        self.states = {"Mao_Livre": S_Mao_Livre, "Reta": S_Reta, "Retangulo":S_Retangulo, "Oval": S_Oval, "Circulo": S_Circulo, "Borracha": S_Borracha, "Quadrado": S_Quadrado, "Seleção": S_Selecao}
+        self.states = {"Mao_Livre": S_Mao_Livre, "Reta": S_Reta, "Retangulo":S_Retangulo, "Oval": S_Oval, "Circulo": S_Circulo, "Borracha": S_Borracha, "Quadrado": S_Quadrado, "Seleção": S_Selecao,"Selecaogeral: S_selecaogeral"}
 
         self.view.criar_elementos()
         self.selecionar_ferramenta("Mao_Livre")
