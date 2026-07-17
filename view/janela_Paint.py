@@ -10,7 +10,7 @@ from model.oval import Oval
 from model.circulo import Circulo
 from model.borracha import Borracha
 from model.quadrado import Quadrado
-
+from model.selecaogeral import Selecaogeral
 
 class JanelaPaint:
     def __init__(self):
@@ -27,7 +27,8 @@ class JanelaPaint:
             Retangulo : self.desenhar_retangulo,
             Oval : self.desenhar_oval,
             Circulo: self.desenhar_circulo,
-            Quadrado :self.desenhar_quadrado
+            Quadrado :self.desenhar_quadrado,
+            Selecaogeral:self.desenhar_selecaogeral
          }
 
     def configuracao_janela(self):
@@ -102,7 +103,9 @@ class JanelaPaint:
         bot_quadrado = Button(frame_linha2,text="QUADRADO",command=lambda:self.controller.selecionar_ferramenta("Quadrado"))
         bot_borracha = Button(frame_linha2, text="BORRACHA", command=lambda: self.controller.selecionar_ferramenta("Borracha"))
         bot_selecao = Button(frame_linha2, text="SELEÇÃO",command=lambda: self.controller.selecionar_ferramenta("Seleção"))
+        bot_selecaogeral = Button(frame_linha2,text="SELEÇÃO GERAL",command=lambda: self.controller.selecionar_ferramenta("Selecaogeral"))
         bot_limpar = Button(frame_linha2, text="LIMPAR", bg="#9c5b56", fg="white" ,command=self.controller.limpar_tela)
+        
 
         #Coloca os botões na janela
         bot_livre.pack(side=LEFT, padx=1)
@@ -113,6 +116,7 @@ class JanelaPaint:
         bot_quadrado.pack(side=LEFT, padx=1)
         bot_borracha.pack(side=LEFT, padx=1)
         bot_selecao.pack(side=LEFT,padx=1)
+        bot_selecaogeral.pack(side=LEFT,padx=1)
         bot_limpar.pack(side=LEFT)
 
         # mostra a cor da borda atual na interface
@@ -197,6 +201,10 @@ class JanelaPaint:
     def desenhar_quadrado(self,figura, dash=None):
         ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
         self.canvas.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
+
+    def desenhar_selecaogeral(self,figura, dash=None):
+        ini_x, ini_y, posx, posy = figura.pegar_dados()
+        self.canvas.create_rectangle(ini_x, ini_y, posx, posy, dash=(4,2))
 
 
     # metodo simplificado que desenha tudo direto
