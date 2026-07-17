@@ -1,4 +1,4 @@
-from state.S_ferramentas import Ferramenta
+from controller.state.S_ferramentas import Ferramenta
 from model.reta import Reta
 
 class S_Reta(Ferramenta):

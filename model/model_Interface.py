@@ -98,4 +98,7 @@ class ModelInterface:
         if figSel:
             self.figuras.remove(figSel)
 
-    
+    # salva as alterações e limpa a tela inteira quando clica no botão limpar (chama o controller e o controller chama esse método)
+    def limpar_tudo(self):
+        self.figuras_desfeitas = list(self.figuras)
+        self.figuras = []

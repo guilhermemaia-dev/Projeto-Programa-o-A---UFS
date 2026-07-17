@@ -228,6 +228,3 @@ class JanelaPaint:
         return filedialog.askopenfilename(
             title="Abrir Arquivo",
             filetypes=[("Arquivos Paint", "*.paint"), ("Todos os Arquivos", "*.*")])
-#Método de colocar a figura acima das outras#
-    def camada_acima(figuras):
-        figuras.remove(figSel)

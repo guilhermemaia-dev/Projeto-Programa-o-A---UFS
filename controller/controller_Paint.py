@@ -1,11 +1,11 @@
-from state.S_mao_livre import S_Mao_Livre
-from state.S_reta import S_Reta
-from state.S_retangulo import S_Retangulo
-from state.S_oval import S_Oval
-from state.S_circulo import S_Circulo
-from state.S_borracha import S_Borracha
-from state.S_quadrado import S_Quadrado
-from state.S_selecao import S_Selecao
+from controller.state.S_mao_livre import S_Mao_Livre
+from controller.state.S_reta import S_Reta
+from controller.state.S_retangulo import S_Retangulo
+from controller.state.S_oval import S_Oval
+from controller.state.S_circulo import S_Circulo
+from controller.state.S_borracha import S_Borracha
+from controller.state.S_quadrado import S_Quadrado
+from controller.state.S_selecao import S_Selecao
 from model.arquivo import Arquivo
 
 class ControllerPaint:
@@ -63,7 +63,7 @@ class ControllerPaint:
 
     #criação do botão para limpar a tela esvaziando a lista de figuras
     def limpar_tela(self):
-        self.model.figuras = []
+        self.model.limpar_tudo()
         self.view.desenhar_figuras(self.model.figuras)
 
 

@@ -1,4 +1,4 @@
-from state.S_ferramentas import Ferramenta
+from controller.state.S_ferramentas import Ferramenta
 from model.oval import Oval
 
 class S_Oval(Ferramenta):

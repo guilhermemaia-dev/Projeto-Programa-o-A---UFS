@@ -1,4 +1,4 @@
-from state.S_ferramentas import Ferramenta
+from controller.state.S_ferramentas import Ferramenta
 from model.retangulo import Retangulo
 
 class S_Retangulo(Ferramenta):
