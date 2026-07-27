@@ -6,21 +6,27 @@ from controller.state.S_circulo import S_Circulo
 from controller.state.S_borracha import S_Borracha
 from controller.state.S_quadrado import S_Quadrado
 from controller.state.S_selecao import S_Selecao
-from controller.state.S_selecaogeral import S_selecaogeral
+from controller.state.S_selecao_area import S_SelecaoArea
 from model.arquivo import Arquivo
 
 class ControllerPaint:
     def __init__(self, model, view):
         self.model = model
         self.view = view
-        self.view.controller = self
 
-        self.states = {"Mao_Livre": S_Mao_Livre, "Reta": S_Reta, "Retangulo":S_Retangulo, "Oval": S_Oval, "Circulo": S_Circulo, "Borracha": S_Borracha, "Quadrado": S_Quadrado, "Seleção": S_Selecao,"Selecaogeral: S_selecaogeral"}
+        self.states = {"Mao_Livre": S_Mao_Livre, 
+                       "Reta": S_Reta, 
+                       "Retangulo":S_Retangulo, 
+                       "Oval": S_Oval, 
+                       "Circulo": S_Circulo, 
+                       "Borracha": S_Borracha, 
+                       "Quadrado": S_Quadrado, 
+                       "Seleção": S_Selecao, 
+                       "Selecao_Area": S_SelecaoArea}
 
-        self.view.criar_elementos()
-        self.selecionar_ferramenta("Mao_Livre")
-        #Atualização da etapa 4
         self.gerenciador_arquivo = Arquivo(self.model)
+        self.view.iniciar(self)
+        self.selecionar_ferramenta("Mao_Livre")
 
     #buscar a lista de cores no model para mandar futuramente para o view
     def obter_cor(self):
@@ -38,10 +44,13 @@ class ControllerPaint:
 
         self.view.alterar_cor_preview(self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
         
-        figura = self.model.selecionada()
-        if figura is not None:
-            figura.trocarcor(self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
-            self.view.desenhar_figuras(self.model.figuras, figura)
+        selecionadas = self.model.obter_selecionadas()
+        if selecionadas is not None:
+            self.model.salvar_estado()
+            for figura in selecionadas:
+                figura.trocarcor(self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
+
+            self.view.desenhar_figuras(self.model.figuras, selecionadas)
 
 
     # receber a ferramenta de forma mais simplificada quando clica no botão, cria logo a figura e manda para a view atualizar a tela de preview
@@ -55,10 +64,17 @@ class ControllerPaint:
         self.model.state_atual.mouse_ini(event)
 
     def mouse_movimentacao(self, event):
+        self.view.atualizar_label_posicao(event.x, event.y)
         self.model.state_atual.mouse_movimentacao(event)
 
     def fim_mouse(self, event):
         self.model.state_atual.fim_mouse(event)
+
+    def rastrear_mouse(self, event):
+            self.view.atualizar_label_posicao(event.x, event.y)
+    
+    def mouse_saiu(self, event=None):
+        self.view.atualizar_label_posicao(None, None)
 
 
 

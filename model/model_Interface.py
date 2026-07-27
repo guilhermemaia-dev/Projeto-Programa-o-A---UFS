@@ -7,98 +7,145 @@ class ModelInterface:
         self.cor_selecionada_preenchimento = ''
         self.ferramenta_atual = "Mao_Livre"
         self.state_atual = None
+
         self.figuras = []
-        self.figuras_desfeitas = []
-        self.indice_selecionado = -1
-        self.buffer = None
+        self.indices_selecionados = []
+        self.historico_undo = []
+        self.historico_redo = []
+        self.buffer = []
 
 
-    def limpa_selecao(self) :#|
-        self.indice_selecionado = -1
+    def limpa_selecao(self) :
+        self.indices_selecionados.clear()
 
-    def seleciona(self, px, py) :
-        i = len(self.figuras)-1
-        while i >= 0 and not self.figuras[i].contem(px, py) :
-            i -= 1
-        self.indice_selecionado = i
+    def selecionar_por_area(self, x1, y1, x2, y2):
+        sel_x1, sel_x2 = min(x1, x2), max(x1, x2)
+        sel_y1, sel_y2 = min(y1, y2), max(y1, y2)
 
-    def selecionada(self) :
-        if self.indice_selecionado >= 0 :
-            return self.figuras[self.indice_selecionado]
-        else :
-            return None
+        self.indices_selecionados = []
+
+        for index, fig in enumerate(self.figuras):
+            if fig.esta_dentro(sel_x1, sel_y1, sel_x2, sel_y2):
+                self.indices_selecionados.append(index)
+
+
+    def mover_selecionadas(self, dx, dy):
+        for i in self.indices_selecionados:
+            self.figuras[i].mover(dx, dy)
+
+
+    def seleciona(self, px, py):
+        self.indices_selecionados = []
+
+        for i in reversed(range(len(self.figuras))):
+            if self.figuras[i].contem(px, py):
+                self.indices_selecionados = [i]
+                return
+
+
+    def obter_selecionadas(self):
+        return [self.figuras[i] for i in self.indices_selecionados if i < len(self.figuras)]
+
+
+    def salvar_estado(self):
+        copia_identica = copy.deepcopy(self.figuras)
+        self.historico_undo.append(copia_identica)
+        self.historico_redo.clear()
         
         
     # Copiar/Colar
     def copiar_selecionada(self) :
-        self.buffer = copy.deepcopy(self.selecionada())
+        self.buffer = copy.deepcopy(self.obter_selecionadas())
 
     def colar(self) :
-        if self.buffer != None :
-            f = self.buffer
-            f.mover(5, 5)
-            self.figuras.append(f)
-            self.buffer = copy.deepcopy(f)
+        if self.buffer:
+            self.salvar_estado()
+            novas_figuras = copy.deepcopy(self.buffer)
+            self.limpa_selecao()
 
-    #metodo para o ctrl z e ctrl y funcionarem sem bug entre figuras
+            for f in novas_figuras:
+                f.mover(10, 10)
+                self.figuras.append(f)
+                self.indices_selecionados.append(len(self.figuras)-1)
+
+            self.buffer = copy.deepcopy(novas_figuras)
+
+
     def adcionar_figura(self, figura):
+        self.salvar_estado()
         self.figuras.append(figura)
-        self.figuras_desfeitas = []
 
-    #metodo para o ctrl z funcionar removendo a figura
+
+
     def desfazer(self):
-        if self.figuras:
-            figura = self.figuras.pop()
-            self.figuras_desfeitas.append(figura)
+        if self.historico_undo:
+            self.historico_redo.append(copy.deepcopy(self.figuras))
+            self.figuras = self.historico_undo.pop()
+            self.limpa_selecao()
 
-    #metodo para o ctrl y funcionar readcionando a figura
+
     def refazer(self):
-        if self.figuras_desfeitas:
-            figura = self.figuras_desfeitas.pop()
-            self.figuras.append(figura)
+        if self.historico_redo:
+            self.historico_undo.append(copy.deepcopy(self.figuras))
+            self.figuras = self.historico_redo.pop()
+            self.limpa_selecao()
 
 
-    #criação dos métodos de camadas e manipulação da lista#
-    #o programa desenha as figuras e suas camadas baseado na sua posição na lista de figuras, quem está por último, está no final da fila#
-    
+    #criação dos métodos de camadas e manipulação da lista
+
     def trazer_frente(self):
-        figSel = self.selecionada()
-        if figSel:
-            #Colocando a figura como último termo#
-            self.figuras.remove(figSel)
-            self.figuras.append(figSel)
-            #Atualizando o índice para a última posição e mantém selecionada a figura#
-            self.indice_selecionado = len(self.figuras) - 1
+        if not self.indices_selecionados:
+            return
+        
+        self.salvar_estado()
+        selecionadas = self.obter_selecionadas()
+
+        for index in sorted(self.indices_selecionados, reverse=True):
+            self.figuras.pop(index)
+
+        self.figuras.extend(selecionadas)
+        self.indices_selecionados = list(range(len(self.figuras) - len(selecionadas), len(self.figuras)))
+
     def trazer_tras(self):
-        figSel = self.selecionada()
-        if figSel:
-            self.figuras.remove(figSel)
-            #Coloca a figura no último termo e atualiza o índice e mantém selecionada a figura#
-            self.figuras.insert(0, figSel)
-            self.indice_selecionado = 0
+        if not self.indices_selecionados:
+            return
+
+        self.salvar_estado()
+        selecionadas = self.obter_selecionadas()
+
+        for index in sorted(self.indices_selecionados, reverse=True):
+            self.figuras.pop(index)
+
+        self.figuras = selecionadas + self.figuras
+        self.indices_selecionados = list(range(len(selecionadas)))
+
     #Mover somente uma camada#
     def uma_frente(self):
-        #verifica se ela já é a última da lista#
-        if self.indice_selecionado < len(self.figuras) - 1:
-            atual = self.indice_selecionado
-            #Efetua a troca das posições#
-            self.figuras[atual], self.figuras[atual + 1] = self.figuras[atual + 1], self.figuras[atual]
-            self.indice_selecionado += 1
+        if len(self.indices_selecionados) == 1:
+            index = self.indices_selecionados[0]
+            if index < len(self.figuras) - 1:
+                self.salvar_estado()
+                self.figuras[index], self.figuras[index + 1] = self.figuras[index + 1], self.figuras[index]
+                self.indices_selecionados = [index + 1]
+
     def uma_atras(self):
-        #verifica se já é a primeira da lista#
-        if self.indice_selecionado > 0:
-            atual = self.indice_selecionado
-            #Efetua a troca das posições#
-            self.figuras[atual], self.figuras[atual - 1] = self.figuras[atual - 1], self.figuras[atual]
-            self.indice_selecionado -= 1
+        if len(self.indices_selecionados) == 1:
+            index = self.indices_selecionados[0]
+            if index > 0:
+                self.salvar_estado()
+                self.figuras[index], self.figuras[index - 1] = self.figuras[index - 1], self.figuras[index]
+                self.indices_selecionados = [index - 1]
             
-    #Método de deletar#
+
     def deletar_lista(self):
-        figSel = self.selecionada()
-        if figSel:
-            self.figuras.remove(figSel)
+        if self.indices_selecionados:
+            self.salvar_estado()
+            for index in sorted(self.indices_selecionados, reverse=True):
+                self.figuras.pop(index)
+            self.limpa_selecao()
 
     # salva as alterações e limpa a tela inteira quando clica no botão limpar (chama o controller e o controller chama esse método)
     def limpar_tudo(self):
-        self.figuras_desfeitas = list(self.figuras)
+        self.salvar_estado()
         self.figuras = []
+        self.limpa_selecao()

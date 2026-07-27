@@ -22,6 +22,15 @@ class Figuras(ABC):
     def contem(self, x, y):
         pass
 
+    # verifica se a figura inteira está contida dentro da seleção
+    def esta_dentro(self, sel_x1, sel_y1, sel_x2, sel_y2):
+        fig_x1 = min(self.ini_x, self.posx)
+        fig_y1 = min(self.ini_y, self.posy)
+        fig_x2 = max(self.ini_x, self.posx)
+        fig_y2 = max(self.ini_y, self.posy)
+
+        return (fig_x1 >= sel_x1 and fig_y1 >= sel_y1 and fig_x2 <= sel_x2 and fig_y2 <= sel_y2)
+
     #serve para mover a figura
     @abstractmethod
     def mover(self, dx, dy):
