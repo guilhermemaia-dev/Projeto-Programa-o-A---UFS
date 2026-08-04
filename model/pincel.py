@@ -1,8 +1,8 @@
 from funcoes_extras.poli_pontos import PoliPontos
 from funcoes_extras.distancia import distancia
 
-class Mao_Livre(PoliPontos):
-    def __init__(self, ini_x, ini_y, posx, posy, cor, espessura=3):
+class Pincel(PoliPontos):
+    def __init__(self, ini_x, ini_y, posx, posy, cor, espessura=6):
         super().__init__(ini_x, ini_y, posx, posy)
         self.cor = cor
         self.pontos = [(ini_x, ini_y), (posx, posy)]

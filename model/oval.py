@@ -1,13 +1,14 @@
 from model.figuras import Figuras
 
 class Oval(Figuras):
-    def __init__(self, ini_x, ini_y, posx, posy, cor_borda, cor_preenchimento):
+    def __init__(self, ini_x, ini_y, posx, posy, cor_borda, cor_preenchimento, espessura=3):
         super().__init__(ini_x, ini_y, posx, posy)
         self.cor_borda = cor_borda
         self.cor_preenchimento = cor_preenchimento
+        self.espessura = espessura
 
     def pegar_dados(self):
-        return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor_borda, self.cor_preenchimento)
+        return (self.ini_x, self.ini_y, self.posx, self.posy, self.cor_borda, self.cor_preenchimento, self.espessura)
     
     def validar(self):
         return abs(self.posx - self.ini_x) >= 2 and abs(self.posy - self.ini_y) >= 2

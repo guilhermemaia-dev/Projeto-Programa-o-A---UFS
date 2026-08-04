@@ -9,7 +9,7 @@ class S_Mao_Livre(Ferramenta):
         self.ini_x = event.x
         self.ini_y = event.y
 
-        self.preview = Mao_Livre(self.ini_x, self.ini_y, event.x, event.y, self.model.cor_selecionada_borda)
+        self.preview = Mao_Livre(self.ini_x, self.ini_y, event.x, event.y, self.model.cor_selecionada_borda, self.model.espessura)
 
     #enquanto o mouse movimenta, se houver uma figura criada (ou seja, de houver um preview), ele adiciona os pontos na lista dos pontos.
     def mouse_movimentacao(self, event):

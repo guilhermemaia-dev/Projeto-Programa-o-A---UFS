@@ -5,8 +5,8 @@ from model.reta import Reta
 from model.retangulo import Retangulo
 from model.oval import Oval
 from model.circulo import Circulo
-from model.borracha import Borracha
 from model.quadrado import Quadrado
+from model.pincel import Pincel
 
 class CanvasDesenho(Canvas):
     def __init__(self, master, controller):
@@ -17,11 +17,11 @@ class CanvasDesenho(Canvas):
         self.dicionario_figuras = {
             Mao_Livre : self.desenhar_mao_livre,
             Reta : self.desenhar_reta,
-            Borracha : self.desenhar_borracha,
             Retangulo : self.desenhar_retangulo,
             Oval : self.desenhar_oval,
             Circulo: self.desenhar_circulo,
-            Quadrado :self.desenhar_quadrado
+            Quadrado :self.desenhar_quadrado,
+            Pincel: self.desenhar_pincel
             }
 
         self.bind("<Button-1>", self.controller.mouse_ini)    
@@ -53,29 +53,29 @@ class CanvasDesenho(Canvas):
 
     #Criação de metodos para desenhar as figuras
     def desenhar_reta(self, figura, dash=None):
-        ini_x, ini_y, posx, posy, cor = figura.pegar_dados()
-        self.create_line(ini_x, ini_y, posx, posy, fill=cor, dash=dash)
+        ini_x, ini_y, posx, posy, cor, espessura = figura.pegar_dados()
+        self.create_line(ini_x, ini_y, posx, posy, fill=cor, dash=dash, width=espessura)
     
     def desenhar_mao_livre(self, figura, dash=None):
-        pontos, cor = figura.pegar_dados()
-        self.create_line(pontos, fill=cor, dash=dash)
-        
-    def desenhar_borracha(self,figura, dash=None):
-        pontos, cor, tamanho = figura.pegar_dados()
-        self.create_line(pontos, fill=cor, width=tamanho, dash=dash)
+        pontos, cor, espessura = figura.pegar_dados()
+        self.create_line(pontos, fill=cor, dash=dash, width=espessura)
     
     def desenhar_retangulo(self,figura, dash=None):
-        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-        self.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench, espessura = figura.pegar_dados()
+        self.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash, width=espessura)
 
     def desenhar_oval(self,figura, dash=None):
-        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-        self.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench, espessura = figura.pegar_dados()
+        self.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash, width=espessura)
 
     def desenhar_circulo(self,figura, dash=None):
-        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-        self.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench, espessura = figura.pegar_dados()
+        self.create_oval(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash, width=espessura)
 
     def desenhar_quadrado(self,figura, dash=None):
-        ini_x, ini_y, posx, posy, cor_borda, cor_preench = figura.pegar_dados()
-        self.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash)
+        ini_x, ini_y, posx, posy, cor_borda, cor_preench, espessura = figura.pegar_dados()
+        self.create_rectangle(ini_x, ini_y, posx, posy, outline=cor_borda, fill=cor_preench, dash=dash, width=espessura)
+
+    def desenhar_pincel(self, figura, dash=None):
+        pontos, cor, espessura = figura.pegar_dados()
+        self.create_line(pontos, fill=cor, dash=dash, width=espessura, capstyle=ROUND, joinstyle=ROUND, smooth=True)    

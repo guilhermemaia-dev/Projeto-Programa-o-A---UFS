@@ -8,7 +8,7 @@ class S_Reta(Ferramenta):
         self.ini_x = event.x 
         self.ini_y = event.y
 
-        self.preview = Reta(self.ini_x, self.ini_y, event.x, event.y, self.model.cor_selecionada_borda)
+        self.preview = Reta(self.ini_x, self.ini_y, event.x, event.y, self.model.cor_selecionada_borda, self.model.espessura)
 
     def mouse_movimentacao(self, event):
         if self.preview is None:

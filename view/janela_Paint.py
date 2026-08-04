@@ -76,9 +76,6 @@ class JanelaPaint:
     def desenhar_reta(self, figura, dash=None):
         self.canvas_desenho.desenhar_reta(figura, dash=dash)
 
-    def desenhar_borracha(self, figura, dash=None):
-        self.canvas_desenho.desenhar_borracha(figura, dash=dash)
-
     def desenhar_retangulo(self, figura, dash=None):
         self.canvas_desenho.desenhar_retangulo(figura, dash=dash)
 
@@ -90,3 +87,6 @@ class JanelaPaint:
 
     def desenhar_quadrado(self, figura, dash=None):
         self.canvas_desenho.desenhar_quadrado(figura, dash=dash)
+
+    def desenhar_pincel(self, figura, dash=None):
+        self.canvas_desenho.desenhar_pincel(figura, dash=dash)

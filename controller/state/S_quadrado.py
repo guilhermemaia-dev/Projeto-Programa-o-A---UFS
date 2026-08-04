@@ -9,7 +9,7 @@ class S_Quadrado(Ferramenta):
         self.ini_x = event.x 
         self.ini_y = event.y
 
-        self.preview = Quadrado(self.ini_x, self.ini_y, event.x, event.y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
+        self.preview = Quadrado(self.ini_x, self.ini_y, event.x, event.y, self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento, self.model.espessura)
 
     # enquanto o mouse se movimenta, vai atualizando o quadrado
     def mouse_movimentacao(self, event):

@@ -5,10 +5,12 @@ class S_SelecaoArea(Ferramenta):
     preview = None
     arrastando_todas = False
     ultimo_x = ultimo_y = 0
+    estado_foi_salvo = False
 
     def mouse_ini(self, event):
         self.ultimo_x = event.x
         self.ultimo_y = event.y
+        self.estado_foi_salvo = False
 
         # verifica se clicou em uma figura que já faz parte da seleção
         selecionadas = self.model.obter_selecionadas()
@@ -17,12 +19,10 @@ class S_SelecaoArea(Ferramenta):
         # se clicou em alguma figura do grupo vai arrastar todas
         if clique_na_selecionada:
             self.arrastando_todas = True
-            self.model.salvar_estado()
 
         # se clicou no vazio, limpa tudo e recomeça a desenhar
         else:
             self.arrastando_todas = False
-            self.model.salvar_estado()
             self.model.limpa_selecao()
             self.ini_x = event.x 
             self.ini_y = event.y
@@ -31,6 +31,11 @@ class S_SelecaoArea(Ferramenta):
     def mouse_movimentacao(self, event):
         # se tiver arrastando, move todas as figuras selecionadas
         if self.arrastando_todas:
+
+            if not self.estado_foi_salvo:
+                self.model.salvar_estado()
+                self.estado_foi_salvo = True
+
             dx = event.x - self.ultimo_x
             dy = event.y - self.ultimo_y
             self.model.mover_selecionadas(dx, dy)

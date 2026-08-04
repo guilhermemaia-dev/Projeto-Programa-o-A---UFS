@@ -3,10 +3,10 @@ from controller.state.S_reta import S_Reta
 from controller.state.S_retangulo import S_Retangulo
 from controller.state.S_oval import S_Oval
 from controller.state.S_circulo import S_Circulo
-from controller.state.S_borracha import S_Borracha
 from controller.state.S_quadrado import S_Quadrado
 from controller.state.S_selecao import S_Selecao
 from controller.state.S_selecao_area import S_SelecaoArea
+from controller.state.S_pincel import S_Pincel
 from model.arquivo import Arquivo
 
 class ControllerPaint:
@@ -19,12 +19,13 @@ class ControllerPaint:
                        "Retangulo":S_Retangulo, 
                        "Oval": S_Oval, 
                        "Circulo": S_Circulo, 
-                       "Borracha": S_Borracha, 
                        "Quadrado": S_Quadrado, 
                        "Seleção": S_Selecao, 
-                       "Selecao_Area": S_SelecaoArea}
+                       "Selecao_Area": S_SelecaoArea,
+                       "Pincel": S_Pincel}
 
         self.gerenciador_arquivo = Arquivo(self.model)
+        self.model.alterar_espessura(5)
         self.view.iniciar(self)
         self.selecionar_ferramenta("Mao_Livre")
 
@@ -42,7 +43,7 @@ class ControllerPaint:
             else:
                 self.model.cor_selecionada_borda = "#000000"
 
-        self.view.alterar_cor_preview(self.model.cor_selecionada_borda, self.model.cor_selecionada_preenchimento)
+        self.view.alterar_cor_preview(self.obter_cor_borda(), self.obter_cor_preenchimento())
         
         selecionadas = self.model.obter_selecionadas()
         if selecionadas is not None:
@@ -94,12 +95,12 @@ class ControllerPaint:
     
 
     #criação do metodo ctrl z para remover a ultima figura
-    def ctrl_z(self,event):    
+    def ctrl_z(self,event=None):    
         self.model.desfazer()
         self.view.desenhar_figuras(self.model.figuras)
     
     #Criação do metodo ctrl y para readcionar a figura removida
-    def ctrl_y(self,event):
+    def ctrl_y(self,event=None):
         self.model.refazer()
         self.view.desenhar_figuras(self.model.figuras)
 
@@ -145,3 +146,20 @@ class ControllerPaint:
     def mover_uma_atras(self, event=None):
         self.model.uma_atras()
         self.view.desenhar_figuras(self.model.figuras)
+
+    def atualizar_espessura(self, valor):
+        valor_inteiro = int(float(valor))
+        self.model.alterar_espessura(valor_inteiro)
+        self.view.header.atualizar_label_espessura(valor_inteiro)
+
+    def obter_cor_borda(self):
+        return self.model.cor_selecionada_borda
+
+    def obter_cor_preenchimento(self):
+        return self.model.cor_selecionada_preenchimento
+
+    def obter_espessura_atual(self):
+        return self.model.espessura
+
+    def obter_ferramenta_atual(self):
+        return self.model.ferramenta_atual

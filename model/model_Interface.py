@@ -2,11 +2,12 @@ import copy
 
 class ModelInterface:
     def __init__(self):
-        self.lista_cores = ["#00a8ff", "#c01414", "#10eb09", "#000000", "#ffffff", "#d9ff00", "#a200ff", "#ff5e00", "#858585", "#E7E7E7"]
+        self.lista_cores = ["#00a8ff", "#c01414", "#10eb09", "#000000", "#ffffff", "#d9ff00", "#a200ff", "#ff5e00", "#858585", ""]
         self.cor_selecionada_borda = "#000000"
         self.cor_selecionada_preenchimento = ''
         self.ferramenta_atual = "Mao_Livre"
         self.state_atual = None
+        self.espessura = 0
 
         self.figuras = []
         self.indices_selecionados = []
@@ -149,3 +150,7 @@ class ModelInterface:
         self.salvar_estado()
         self.figuras = []
         self.limpa_selecao()
+
+
+    def alterar_espessura(self, valor):
+        self.espessura = valor
