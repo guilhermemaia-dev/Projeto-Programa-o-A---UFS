@@ -9,6 +9,7 @@ class JanelaPaint:
         self.janela = Tk()
         self.janela.title("PAINT 1.0")
         self.janela.geometry("1280x720")
+        self.janela.minsize(1000,600)
         self.janela.state("zoomed")
         self.controller = None
 
@@ -28,11 +29,11 @@ class JanelaPaint:
         self.header = Header(self.janela, self.controller)
         self.header.pack(side=TOP, fill=X)
 
-        self.canvas_desenho = CanvasDesenho(self.janela, self.controller)
-        self.canvas_desenho.pack(side=TOP, fill=BOTH, expand=True)
-
         self.footer = Footer(self.janela, self.controller)
         self.footer.pack(side=BOTTOM, fill=X)
+
+        self.canvas_desenho = CanvasDesenho(self.janela, self.controller)
+        self.canvas_desenho.pack(side=TOP, fill=BOTH, expand=True)
 
     def criar_binds(self):
         self.janela.bind("<Control-c>", self.controller.control_c)

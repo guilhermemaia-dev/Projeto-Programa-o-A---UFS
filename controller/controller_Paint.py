@@ -152,6 +152,14 @@ class ControllerPaint:
         self.model.alterar_espessura(valor_inteiro)
         self.view.header.atualizar_label_espessura(valor_inteiro)
 
+        selecionadas = self.model.obter_selecionadas()
+        if selecionadas:
+            self.model.salvar_estado()
+            for figura in selecionadas:
+                figura.alterar_espessura(valor_inteiro)
+
+            self.view.desenhar_figuras(self.model.figuras, selecionadas)
+
     def obter_cor_borda(self):
         return self.model.cor_selecionada_borda
 

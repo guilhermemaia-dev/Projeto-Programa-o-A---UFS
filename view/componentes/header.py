@@ -196,18 +196,27 @@ class Header(Frame):
             
             bot_cor.grid(row=linha, column=coluna, padx=2, pady=2)
             coluna += 1
-            if coluna > 6:
+            if coluna > 9:
                 coluna = 0
                 linha += 1
 
 
 
         #BOTAO PARA ESCOLHER MAIS CORES
+
+        self.bloco_mais_cores = Frame(self.frame_superior, bg=self.bg_bloco, padx=12, pady=8,highlightbackground="#313244", highlightthickness=1)
+        self.bloco_mais_cores.pack(side=LEFT, fill=Y, padx=(0,10))
+
         caminho = os.path.join(pasta_assets, "maiscores.png")
         self.imagem = PhotoImage(file=caminho)
-        self.imagem = self.imagem.subsample(20, 20)
-        bot_mais_cores = Button(frame_paleta, image=self.imagem, bg="#313244", relief=FLAT, bd=0, cursor="hand2", command=self.abrir_seletor_cor, width=18, height=20)
+        self.imagem = self.imagem.subsample(15,5)
+        bot_mais_cores = Button(self.bloco_mais_cores, image=self.imagem, bg="#313244", relief=FLAT, bd=0, cursor="hand2", command=self.abrir_seletor_cor, width=40, height=60)
         bot_mais_cores.grid(row=linha, column=coluna, padx=2, pady=2)
+
+        label_mais_cores = Label(self.bloco_mais_cores, text="EDITAR CORES", bg=self.bg_bloco, fg=self.fg_preview, font=("Segoe UI", 8, "bold"))
+        label_mais_cores.grid(row=1, column=0, pady=(0, 4))
+
+
 
 
 
@@ -217,7 +226,6 @@ class Header(Frame):
 
         label_titulo_preview = Label(self.bloco_preview, text="ESTADO DAS CORES", bg=self.bg_bloco, fg=self.fg_preview, font=("Segoe UI", 8, "bold"))
         label_titulo_preview.grid(row=0, column=0, columnspan=2, pady=(0, 4))
-
 
 
 

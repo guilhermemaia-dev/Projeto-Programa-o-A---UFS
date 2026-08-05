@@ -39,3 +39,6 @@ class Figuras(ABC):
     #serve para mudar cor da figura
     def trocarcor(self,cor_borda,cor_preenchimento):
         pass        
+
+    def alterar_espessura(self, nova_espessura):
+        self.espessura = nova_espessura

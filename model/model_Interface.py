@@ -2,7 +2,7 @@ import copy
 
 class ModelInterface:
     def __init__(self):
-        self.lista_cores = ["#00a8ff", "#c01414", "#10eb09", "#000000", "#ffffff", "#d9ff00", "#a200ff", "#ff5e00", "#858585", ""]
+        self.lista_cores = ["#000000", "#636363", "#5c0909", "#d61c1c", "#f06311", "#f3e301", "#10f053", "#0d8af0", "#380ff0", "#881D92", "#FFFFFF", "#AFAFAF", "#693810", "#D677BA", "#9BC721", "#DAD781", "#69BE61", "#66E2CD", "#1D40B4", ""]
         self.cor_selecionada_borda = "#000000"
         self.cor_selecionada_preenchimento = ''
         self.ferramenta_atual = "Mao_Livre"
